@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Weather - App Engine DevAppServer" type="AppEngineRunConfiguration" factoryName="App Engine DevAppServer">
+    <module name="Weather" />
+    <setting name="serverAddress" value="" />
+    <setting name="sdkPath" value="" />
+    <setting name="serverPort" value="" />
+    <setting name="vmArgs" value="" />
+    <setting name="warPath" value="" />
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Run" />
+    <method />
+  </configuration>
+</component>
