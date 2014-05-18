@@ -10,37 +10,16 @@ import java.lang.String;
 
 public class Weather_Location
 {
-    Context currentContext = null;
+    private Context currentContext = null;
+    private Location currentLocation = null;
 
     public Weather_Location(Context ctx)
     {
         this.currentContext = ctx;
+        SetLocation();
     }
 
-    public String GetWOEID()
-    {
-        Location currentLocation = GetLocation();
-
-        double longitude = 0;
-        double latitude = 0;
-
-        if (currentLocation != null) {
-            longitude = currentLocation.getLongitude();
-            latitude = currentLocation.getLatitude();
-        } else {
-            // Note if you are using the Android Simulator it does not support "GetGPSLocation"
-            // As a result the longitude and latitude had to be hardcoded. (This is the location of Toronto)
-            longitude = 43.7;
-            latitude = -79.4;
-        }
-
-        Log.d("Weather_Location_Longitude", Double.toString(longitude));
-        Log.d("Weather_Location_Latitude", Double.toString(latitude));
-
-        return null;
-    }
-
-    public Location GetLocation()
+    private void SetLocation()
     {
         String provider = "";
         LocationManager locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
@@ -50,10 +29,34 @@ public class Weather_Location
         } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             provider = LocationManager.NETWORK_PROVIDER;
         } else {
-            return null;
+            currentLocation = null;
         }
 
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        return location;
+        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+    }
+
+    public double GetLatitude()
+    {
+        if (currentLocation != null) {
+            return currentLocation.getLatitude();
+        } else {
+            return 79.4;
+        }
+    }
+
+    public double GetLongitude()
+    {
+        if (currentLocation != null) {
+            return currentLocation.getLongitude();
+        } else {
+            return 43.7;
+        }
+    }
+
+
+
+    public Location GetLocation()
+    {
+        return currentLocation;
     }
 }

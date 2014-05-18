@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -21,7 +23,7 @@ public class Weather_Network {
         int BUFFER_SIZE = 4000;
         InputStream in = null;
         try {
-            in = OpenHTTPConnection(URL);
+            in = OpenHTTPConnection();
         } catch (IOException e) {
             Log.d("Networking", e.getLocalizedMessage());
             return "";
@@ -45,30 +47,40 @@ public class Weather_Network {
         return str;
     }
 
-    private InputStream OpenHTTPConnection(String urlString) throws IOException
+    private InputStream OpenHTTPConnection() throws IOException
     {
         InputStream in = null;
         int response = -1;
 
-        URL url = new URL(urlString);
-        URLConnection conn = url.openConnection();
-
-        if (!(conn instanceof HttpURLConnection))
-            throw new IOException("Not an HTTP connection");
         try {
-            HttpURLConnection httpConn = (HttpURLConnection) conn;
-            httpConn.setAllowUserInteraction(false);
-            httpConn.setInstanceFollowRedirects(true);
-            httpConn.setRequestMethod("GET");
-            httpConn.connect();
-            response = httpConn.getResponseCode();
-            if (response == HttpURLConnection.HTTP_OK) {
-                in = httpConn.getInputStream();
+            String query = "lat=" + 43.7 + "&lon=" + -79.4 + "&units=metric&mode=xml&APPID=cbf2998a2c82e81ab7df43b533bf019c";
+            URI uri = new URI("http", "api.openweathermap.org", "/data/2.5/weather", query, null);
+            Log.d("WeatherURL", uri.toASCIIString());
+            URL url = new URL(uri.toASCIIString());
+
+            URLConnection conn = url.openConnection();
+
+            if (!(conn instanceof HttpURLConnection))
+                throw new IOException("Not an HTTP connection");
+            try {
+                HttpURLConnection httpConn = (HttpURLConnection) conn;
+                httpConn.setAllowUserInteraction(false);
+                httpConn.setInstanceFollowRedirects(true);
+                httpConn.setRequestMethod("GET");
+                httpConn.connect();
+                response = httpConn.getResponseCode();
+                if (response == HttpURLConnection.HTTP_OK) {
+                    in = httpConn.getInputStream();
+                }
+            }
+            catch (Exception ex) {
+                Log.d("Networking", ex.getLocalizedMessage());
+                throw new IOException("Error connecting");
             }
         }
-        catch (Exception ex) {
-            Log.d("Networking", ex.getLocalizedMessage());
-            throw new IOException("Error connecting");
+        catch (URISyntaxException e)
+        {
+            Log.d("URI EXCEPTION", "Invalid URI", e);
         }
 
         return in;

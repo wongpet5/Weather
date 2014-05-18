@@ -6,9 +6,8 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="menu_array">
-        <item>Today</item>
-        <item>Location</item>
-        <item>Forecast</item>
+        <item>Current Weather</item>
+        <item>Weather Forecast</item>
     </string-array>
 
 </resources>

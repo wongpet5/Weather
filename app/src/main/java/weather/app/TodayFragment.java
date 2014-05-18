@@ -63,13 +63,15 @@ public class TodayFragment extends Fragment {
 
                 // Get current location
                 Weather_Location weatherLocation = new Weather_Location(context);
-                String currentLocation = weatherLocation.GetWOEID();
 
-                String serverURL = "http://weather.yahooapis.com/forecastrss?w=4118";
+                String serverURL = "api.openweathermap.org/data/2.5/weather?lat=" + weatherLocation.GetLatitude() + "&lon=" + weatherLocation.GetLongitude() + "&mode=xml&APPID=cbf2998a2c82e81ab7df43b533bf019c";
                 Weather_Network weatherCall = new Weather_Network();
 
                 String weatherXML = weatherCall.DownloadText(serverURL);
                 Log.d("Today Fragment", weatherXML);
+
+                // Parse XML
+
             }
         };
         t.start();
