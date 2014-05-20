@@ -8,21 +8,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import weather.app.HelperMethods.Weather_Location;
 import weather.app.HelperMethods.Weather_Network;
 import weather.app.HelperMethods.Weather_XMLParse;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 
 public class TodayFragment extends Fragment {
 
     private Context context = null;
-
+    private View v = null;
     public TodayFragment(Context ctx)
     {
         this.context = ctx;
@@ -39,7 +47,7 @@ public class TodayFragment extends Fragment {
         String[] menus = getResources().getStringArray(R.array.menu_array);
 
         // Creating view corresponding to the fragment
-        View v = inflater.inflate(R.layout.fragment_today, container, false);
+        v = inflater.inflate(R.layout.fragment_today, container, false);
 
         // Updating the action bar title
         getActivity().getActionBar().setTitle(menus[position]);
@@ -71,7 +79,42 @@ public class TodayFragment extends Fragment {
                 Log.d("Today Fragment", weatherXML);
 
                 // Parse XML
+                Weather_XMLParse weatherXMLParse = new Weather_XMLParse(weatherXML);
+                try {
+                    weatherXMLParse.ParseCurrentWeatherXML();
+                }
+                catch (XmlPullParserException e1) {
+                    throw new RuntimeException(e1);
+                }
+                catch (IOException e2) {
+                    throw new RuntimeException(e2);
+                }
 
+                //Set the values for the Widget Controls
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // Set the Date
+                        TextView dateTextView = (TextView) getActivity().findViewById(R.id.DateTimeText);
+                        Calendar c = Calendar.getInstance();
+                        System.out.println("Current time => " + c.getTime());
+
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                        String formattedDate = df.format(c.getTime());
+                        dateTextView.setText("Date: " + formattedDate);
+
+                        // Set the City
+                        TextView cityTextView = (TextView) getActivity().findViewById(R.id.CityText);
+                        cityTextView.setText("City: " + "Toronto");
+
+                        // Set Current Temperature
+
+                        // Set Minimum Temperature
+
+                        // Set Maximum Temperature 
+                    }
+                });
             }
         };
         t.start();
