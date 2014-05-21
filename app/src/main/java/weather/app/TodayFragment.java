@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.util.Log;
 import android.widget.TextView;
+import android.os.Handler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +30,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 public class TodayFragment extends Fragment {
 
+    private Handler handler;
     private Context context = null;
     private View v = null;
     public TodayFragment(Context ctx)
@@ -38,6 +40,9 @@ public class TodayFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Initialize the Handler
+        handler = new Handler();
 
         // Retrieving the currently selected item number
         int position = getArguments().getInt("position");
@@ -58,6 +63,7 @@ public class TodayFragment extends Fragment {
     @Override
     public void onStart()
     {
+        // Call Parent
         super.onStart();
 
         // Thread to initiate the call to get current location weather information
@@ -79,7 +85,7 @@ public class TodayFragment extends Fragment {
                 Log.d("Today Fragment", weatherXML);
 
                 // Parse XML
-                Weather_XMLParse weatherXMLParse = new Weather_XMLParse(weatherXML);
+                final Weather_XMLParse weatherXMLParse = new Weather_XMLParse(weatherXML);
                 try {
                     weatherXMLParse.ParseCurrentWeatherXML();
                 }
@@ -91,28 +97,30 @@ public class TodayFragment extends Fragment {
                 }
 
                 //Set the values for the Widget Controls
-                getActivity().runOnUiThread(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
 
                         // Set the Date
                         TextView dateTextView = (TextView) getActivity().findViewById(R.id.DateTimeText);
                         Calendar c = Calendar.getInstance();
-                        System.out.println("Current time => " + c.getTime());
-
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                        String formattedDate = df.format(c.getTime());
-                        dateTextView.setText("Date: " + formattedDate);
-
+                        dateTextView.setText("City: " + c.getTime());
+                        
                         // Set the City
                         TextView cityTextView = (TextView) getActivity().findViewById(R.id.CityText);
-                        cityTextView.setText("City: " + "Toronto");
+                        cityTextView.setText("City: " + weatherXMLParse.getCurrentWeather().cityName);
 
                         // Set Current Temperature
+                        TextView currentTemperatureText = (TextView) getActivity().findViewById(R.id.CurrentTemperatureText);
+                        currentTemperatureText.setText("Current Temperature: " + weatherXMLParse.getCurrentWeather().temperature + " Celsius");
 
                         // Set Minimum Temperature
+                        TextView minTemperatureText = (TextView) getActivity().findViewById(R.id.MinimumTemperatureText);
+                        minTemperatureText.setText("Min Temperature: " + weatherXMLParse.getCurrentWeather().minTemp + " Celsius");
 
-                        // Set Maximum Temperature 
+                        // Set Maximum Temperature
+                        TextView maxTemperatureText = (TextView) getActivity().findViewById(R.id.MaximumTemperatureText);
+                        maxTemperatureText.setText("Max Temperature: " + weatherXMLParse.getCurrentWeather().maxTemp + " Celsius");
                     }
                 });
             }
