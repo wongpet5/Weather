@@ -2,31 +2,28 @@ package weather.app;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Picture;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.os.Handler;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.*;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import weather.app.HelperMethods.Weather_Location;
 import weather.app.HelperMethods.Weather_Network;
 import weather.app.HelperMethods.Weather_XMLParse;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 
 public class TodayFragment extends Fragment {
 
@@ -101,31 +98,44 @@ public class TodayFragment extends Fragment {
                     @Override
                     public void run() {
 
-                        // Set the Date
-                        TextView dateTextView = (TextView) getActivity().findViewById(R.id.DateTimeText);
-                        Calendar c = Calendar.getInstance();
-                        dateTextView.setText("City: " + c.getTime());
-                        
-                        // Set the City
-                        TextView cityTextView = (TextView) getActivity().findViewById(R.id.CityText);
-                        cityTextView.setText("City: " + weatherXMLParse.getCurrentWeather().cityName);
-
-                        // Set Current Temperature
-                        TextView currentTemperatureText = (TextView) getActivity().findViewById(R.id.CurrentTemperatureText);
-                        currentTemperatureText.setText("Current Temperature: " + weatherXMLParse.getCurrentWeather().temperature + " Celsius");
-
-                        // Set Minimum Temperature
-                        TextView minTemperatureText = (TextView) getActivity().findViewById(R.id.MinimumTemperatureText);
-                        minTemperatureText.setText("Min Temperature: " + weatherXMLParse.getCurrentWeather().minTemp + " Celsius");
-
-                        // Set Maximum Temperature
-                        TextView maxTemperatureText = (TextView) getActivity().findViewById(R.id.MaximumTemperatureText);
-                        maxTemperatureText.setText("Max Temperature: " + weatherXMLParse.getCurrentWeather().maxTemp + " Celsius");
+                        SetUIControls(weatherXMLParse);
                     }
                 });
             }
         };
         t.start();
+    }
+
+    private void SetUIControls(Weather_XMLParse weatherXMLParse) {
+        // Set the Date
+        TextView dateTextView = (TextView) getActivity().findViewById(R.id.DateTimeText);
+        Calendar c = Calendar.getInstance();
+        dateTextView.setText(c.getTime().toString());
+
+        // Set the City
+        TextView cityTextView = (TextView) getActivity().findViewById(R.id.CityText);
+        cityTextView.setText(weatherXMLParse.getCurrentWeather().cityName);
+
+        // Set Current Temperature
+        TextView currentTemperatureText = (TextView) getActivity().findViewById(R.id.CurrentTemperatureText);
+        currentTemperatureText.setText("Current: " + weatherXMLParse.getCurrentWeather().temperature + " °C");
+
+        // Set Minimum Temperature
+        TextView minTemperatureText = (TextView) getActivity().findViewById(R.id.MinimumTemperatureText);
+        minTemperatureText.setText("Min: " + weatherXMLParse.getCurrentWeather().minTemp + " °C");
+
+        // Set Maximum Temperature
+        TextView maxTemperatureText = (TextView) getActivity().findViewById(R.id.MaximumTemperatureText);
+        maxTemperatureText.setText("Max: " + weatherXMLParse.getCurrentWeather().maxTemp + " °C");
+
+        // Weather Image
+        ImageView weatherImage = (ImageView) getActivity().findViewById(R.id.WeatherImage);
+
+        //SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.filename);
+        SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.cloud);
+        Picture picture = svg.getPicture();
+        Drawable drawable = svg.createPictureDrawable();
+        weatherImage.setImageDrawable(drawable);
     }
 
 }
