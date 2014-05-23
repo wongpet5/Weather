@@ -1,66 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="100"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/DateTimeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:layout_row="0"
-        android:layout_column="1"
-        android:layout_columnSpan="10"
-        android:layout_gravity="center_horizontal"/>
+    <!-- Left Side -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:weightSum="50"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/CityText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="City"
-        android:layout_row="1"
-        android:layout_columnSpan="2"
-        android:layout_column="0"
-        android:layout_marginTop="10dip"/>
+        <TextView
+            android:id="@+id/CityText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="City"
+            android:layout_marginTop="10dip"/>
 
-    <TextView
-        android:id="@+id/CurrentTemperatureText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Current Temperature"
-        android:layout_row="2"
-        android:layout_columnSpan="2"
-        android:layout_column="0" />
+        <TextView
+            android:id="@+id/CurrentTemperatureText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Temperature" />
 
-    <TextView
-        android:id="@+id/MinimumTemperatureText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Minimum Temperature"
-        android:layout_row="3"
-        android:layout_columnSpan="2"
-        android:layout_column="0" />
+        <ImageView
+            android:layout_width="75dip"
+            android:layout_height="75dip"
+            android:id="@+id/WeatherImage"/>
 
-    <TextView
-        android:id="@+id/MaximumTemperatureText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Maximum Temperature"
-        android:layout_row="4"
-        android:layout_columnSpan="2"
-        android:layout_column="0" />
+    </LinearLayout>
 
-    <ImageView
-        android:layout_width="75dip"
-        android:layout_height="75dip"
-        android:id="@+id/WeatherImage"
-        android:layout_row="1"
-        android:layout_column="4"
-        android:layout_rowSpan="4"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dip"
-        android:layout_marginLeft="60dip"/>
+    <!-- Right Side -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:weightSum="50"
+        android:orientation="vertical" >
 
-</GridLayout>
+        <TextView
+            android:id="@+id/DateTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"/>
+
+
+        <TextView
+            android:id="@+id/MinimumTemperatureText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Minimum Temperature" />
+
+        <TextView
+            android:id="@+id/MaximumTemperatureText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Maximum Temperature" />
+
+    </LinearLayout>
+
+</LinearLayout>
 

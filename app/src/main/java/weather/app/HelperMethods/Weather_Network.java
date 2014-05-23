@@ -18,12 +18,14 @@ public class Weather_Network {
 
     }
 
-    public String DownloadText(String URL)
+    // mode 1 = current
+    // mode 2 = future
+    public String DownloadText(double latitude, double longitude, int mode)
     {
         int BUFFER_SIZE = 4000;
         InputStream in = null;
         try {
-            in = OpenHTTPConnection();
+            in = OpenHTTPConnection(latitude, longitude, mode);
         } catch (IOException e) {
             Log.d("Networking", e.getLocalizedMessage());
             return "";
@@ -47,14 +49,29 @@ public class Weather_Network {
         return str;
     }
 
-    private InputStream OpenHTTPConnection() throws IOException
+    private InputStream OpenHTTPConnection(double latitude, double longitude, int mode) throws IOException
     {
         InputStream in = null;
         int response = -1;
 
         try {
-            String query = "lat=" + 43.7 + "&lon=" + -79.4 + "&units=metric&mode=xml&APPID=cbf2998a2c82e81ab7df43b533bf019c";
-            URI uri = new URI("http", "api.openweathermap.org", "/data/2.5/weather", query, null);
+
+            //
+            String query = "";
+            String host = "";
+
+            if (mode == 1)
+            {
+                query = "lat=" + latitude + "&lon=" + longitude + "&units=metric&mode=xml&APPID=cbf2998a2c82e81ab7df43b533bf019c";
+                host = "/data/2.5/weather";
+            }
+            else // if (mode == 2)
+            {
+                query = "lat=" + latitude + "&lon=" + longitude + "&cnt=10&mode=json&APPID=cbf2998a2c82e81ab7df43b533bf019c";
+                host = "/data/2.5/forecast";
+            }
+
+            URI uri = new URI("http", "api.openweathermap.org", host, query, null);
             Log.d("WeatherURL", uri.toASCIIString());
             URL url = new URL(uri.toASCIIString());
 

@@ -75,13 +75,13 @@ public class TodayFragment extends Fragment {
                 // Get current location
                 Weather_Location weatherLocation = new Weather_Location(context);
 
-                String serverURL = "api.openweathermap.org/data/2.5/weather?lat=" + weatherLocation.GetLatitude() + "&lon=" + weatherLocation.GetLongitude() + "&mode=xml&APPID=cbf2998a2c82e81ab7df43b533bf019c";
+                // Get Current Weather Conditions
                 Weather_Network weatherCall = new Weather_Network();
 
-                String weatherXML = weatherCall.DownloadText(serverURL);
+                String weatherXML = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 1);
                 Log.d("Today Fragment", weatherXML);
 
-                // Parse XML
+                // Parse Current Weather Conditions XML
                 final Weather_XMLParse weatherXMLParse = new Weather_XMLParse(weatherXML);
                 try {
                     weatherXMLParse.ParseCurrentWeatherXML();
@@ -93,11 +93,15 @@ public class TodayFragment extends Fragment {
                     throw new RuntimeException(e2);
                 }
 
+                // Get Future Weather Conditions
+                String weatherJSONFuture = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 2);
+
+                Log.d("Future Weather JSON", weatherJSONFuture);
+
                 //Set the values for the Widget Controls
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-
                         SetUIControls(weatherXMLParse);
                     }
                 });
