@@ -122,7 +122,7 @@ public class TodayFragment extends Fragment {
 
         // Set Current Temperature
         TextView currentTemperatureText = (TextView) getActivity().findViewById(R.id.CurrentTemperatureText);
-        currentTemperatureText.setText("Current: " + weatherXMLParse.getCurrentWeather().temperature + " °C");
+        currentTemperatureText.setText(weatherXMLParse.getCurrentWeather().temperature + " °C");
 
         // Set Minimum Temperature
         TextView minTemperatureText = (TextView) getActivity().findViewById(R.id.MinimumTemperatureText);

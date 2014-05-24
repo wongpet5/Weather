@@ -40,7 +40,7 @@ public class Weather_Location
         if (currentLocation != null) {
             return currentLocation.getLatitude();
         } else {
-            return 79.4;
+            return 43.7;
         }
     }
 
@@ -49,7 +49,7 @@ public class Weather_Location
         if (currentLocation != null) {
             return currentLocation.getLongitude();
         } else {
-            return 43.7;
+            return -79.4;
         }
     }
 

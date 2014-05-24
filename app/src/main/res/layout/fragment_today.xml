@@ -1,64 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:weightSum="100"
-    android:orientation="vertical" >
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <!-- Left Side -->
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:weightSum="50"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"> <!-- This will have 50% of the screen -->
 
         <TextView
             android:id="@+id/CityText"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="City"
-            android:layout_marginTop="10dip"/>
+            android:gravity="center_horizontal"
+            android:fontFamily="Montserrat"
+            android:textSize="17dp"
+            android:layout_marginTop="10dp"/>
 
         <TextView
             android:id="@+id/CurrentTemperatureText"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Current Temperature" />
+            android:textSize="25dp"
+            android:text="Current Temp"
+            android:gravity="center_horizontal" />
 
         <ImageView
-            android:layout_width="75dip"
-            android:layout_height="75dip"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
             android:id="@+id/WeatherImage"/>
 
     </LinearLayout>
 
-    <!-- Right Side -->
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:weightSum="50"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0">  <!-- This will have another 50% of the screen -->
 
-        <TextView
-            android:id="@+id/DateTimeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date"/>
+    <TextView
+        android:id="@+id/DateTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"/>
 
 
-        <TextView
-            android:id="@+id/MinimumTemperatureText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Minimum Temperature" />
+    <TextView
+        android:id="@+id/MinimumTemperatureText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Minimum Temperature" />
 
-        <TextView
-            android:id="@+id/MaximumTemperatureText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Maximum Temperature" />
+    <TextView
+        android:id="@+id/MaximumTemperatureText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maximum Temperature" />
 
     </LinearLayout>
 
 </LinearLayout>
-
