@@ -26,13 +26,16 @@
             android:layout_height="wrap_content"
             android:textSize="25dp"
             android:text="Current Temp"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:fontFamily="Montserrat" />
 
         <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
-            android:id="@+id/WeatherImage"/>
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="top"
+            android:id="@+id/WeatherImage"
+            android:layout_gravity="center_horizontal"
+            android:src="@raw/na" />
 
     </LinearLayout>
 
@@ -43,23 +46,72 @@
         android:layout_weight="1.0">  <!-- This will have another 50% of the screen -->
 
     <TextView
-        android:id="@+id/DateTimeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date"/>
-
-
-    <TextView
-        android:id="@+id/MinimumTemperatureText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Minimum Temperature" />
+            android:id="@+id/Day"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="17dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:fontFamily="Montserrat" />
 
     <TextView
-        android:id="@+id/MaximumTemperatureText"
-        android:layout_width="wrap_content"
+        android:id="@+id/Month"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Maximum Temperature" />
+        android:textSize="25dp"
+        android:text="Month"
+        android:gravity="center_horizontal"
+        android:fontFamily="Montserrat" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5">
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/Thermometer"
+                    android:layout_gravity="center"
+                    android:src="@raw/thermometer"
+                    android:layout_marginLeft="22dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0">
+
+            <TextView
+                    android:id="@+id/MaximumTemperatureText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Max"
+                    android:textSize="15dp"
+                    android:gravity="left"
+                    android:fontFamily="Montserrat" />
+
+                <TextView
+                    android:id="@+id/MinimumTemperatureText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Min"
+                    android:textSize="15dp"
+                    android:gravity="left"
+                    android:fontFamily="Montserrat" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

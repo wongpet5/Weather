@@ -2,6 +2,7 @@ package weather.app;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Picture;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -111,10 +112,65 @@ public class TodayFragment extends Fragment {
     }
 
     private void SetUIControls(Weather_XMLParse weatherXMLParse) {
+
         // Set the Date
-        TextView dateTextView = (TextView) getActivity().findViewById(R.id.DateTimeText);
+        //TextView dateTextView = (TextView) getActivity().findViewById(R.id.DateTimeText);
+        //Calendar c = Calendar.getInstance();
+        //dateTextView.setText(c.getTime().toString());
+
+        // Set the Day of the Week
+        TextView dateTextView = (TextView) getActivity().findViewById(R.id.Day);
         Calendar c = Calendar.getInstance();
-        dateTextView.setText(c.getTime().toString());
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
+        String weekDay = "";
+        if (Calendar.MONDAY == dayOfWeek) {
+            weekDay = "Monday";
+        } else if (Calendar.TUESDAY == dayOfWeek) {
+            weekDay = "Tuesday";
+        } else if (Calendar.WEDNESDAY == dayOfWeek) {
+            weekDay = "Wednesday";
+        } else if (Calendar.THURSDAY == dayOfWeek) {
+            weekDay = "Thursday";
+        } else if (Calendar.FRIDAY == dayOfWeek) {
+            weekDay = "Friday";
+        } else if (Calendar.SATURDAY == dayOfWeek) {
+            weekDay = "Saturday";
+        } else if (Calendar.SUNDAY == dayOfWeek) {
+            weekDay = "Sunday";
+        }
+        dateTextView.setText(weekDay);
+
+        // Set the Month + Day
+        int month = c.get(Calendar.MONTH);
+        String dd = "";
+        if (month == Calendar.JANUARY) {
+            dd = "January " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.FEBRUARY) {
+            dd = "February " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.MARCH) {
+            dd = "March " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.APRIL) {
+            dd = "April " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.MAY) {
+            dd = "May " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.JUNE) {
+            dd = "June " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.JULY) {
+            dd = "July " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.AUGUST) {
+            dd = "August " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.SEPTEMBER) {
+            dd = "September " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.OCTOBER) {
+            dd = "October " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.NOVEMBER) {
+            dd = "November " + c.get(Calendar.DAY_OF_MONTH);
+        } else if (month == Calendar.DECEMBER) {
+            dd = "December " + c.get(Calendar.DAY_OF_MONTH);
+        }
+        TextView monthTextView = (TextView) getActivity().findViewById(R.id.Month);
+        monthTextView.setText(dd);
 
         // Set the City
         TextView cityTextView = (TextView) getActivity().findViewById(R.id.CityText);
@@ -122,24 +178,25 @@ public class TodayFragment extends Fragment {
 
         // Set Current Temperature
         TextView currentTemperatureText = (TextView) getActivity().findViewById(R.id.CurrentTemperatureText);
-        currentTemperatureText.setText(weatherXMLParse.getCurrentWeather().temperature + " °C");
+        currentTemperatureText.setText((int)Math.round(weatherXMLParse.getCurrentWeather().temperature) + " °C");
 
         // Set Minimum Temperature
         TextView minTemperatureText = (TextView) getActivity().findViewById(R.id.MinimumTemperatureText);
-        minTemperatureText.setText("Min: " + weatherXMLParse.getCurrentWeather().minTemp + " °C");
+        minTemperatureText.setText("Low: " + (int)Math.round(weatherXMLParse.getCurrentWeather().minTemp) + " °C");
 
         // Set Maximum Temperature
         TextView maxTemperatureText = (TextView) getActivity().findViewById(R.id.MaximumTemperatureText);
-        maxTemperatureText.setText("Max: " + weatherXMLParse.getCurrentWeather().maxTemp + " °C");
+        maxTemperatureText.setText("High: " + (int)Math.round(weatherXMLParse.getCurrentWeather().maxTemp) + " °C");
 
-        // Weather Image
+        // Weather Image uses SVG
+        //ImageView weatherImage = (ImageView) getActivity().findViewById(R.id.WeatherImage);
+        //SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.cloud);
+        //Drawable drawable = svg.createPictureDrawable();
+        //weatherImage.setImageDrawable(drawable);
+
+        // Weather Image uses PNG
         ImageView weatherImage = (ImageView) getActivity().findViewById(R.id.WeatherImage);
-
-        //SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.filename);
-        SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.cloud);
-        Picture picture = svg.getPicture();
-        Drawable drawable = svg.createPictureDrawable();
-        weatherImage.setImageDrawable(drawable);
+        weatherImage.setImageResource(R.raw.fair);
     }
 
 }
