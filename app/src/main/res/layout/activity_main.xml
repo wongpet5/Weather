@@ -1,23 +1,118 @@
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
-    <!-- The main content view -->
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <!-- The navigation drawer -->
-    <ListView android:id="@+id/drawer_list"
-        android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:background="#111"/>
+        android:layout_weight="1.0"> <!-- This will have 50% of the screen -->
 
-</android.support.v4.widget.DrawerLayout>
+        <TextView
+            android:id="@+id/CityText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="City"
+            android:gravity="center_horizontal"
+            android:fontFamily="Montserrat"
+            android:textSize="17dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/CurrentTemperatureText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="Current Temp"
+            android:gravity="center_horizontal"
+            android:fontFamily="Montserrat" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="top"
+            android:id="@+id/WeatherImage"
+            android:layout_gravity="center_horizontal"
+            android:src="@raw/na" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0">  <!-- This will have another 50% of the screen -->
+
+        <TextView
+            android:id="@+id/Day"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="17dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:fontFamily="Montserrat" />
+
+        <TextView
+            android:id="@+id/Month"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="Month"
+            android:gravity="center_horizontal"
+            android:fontFamily="Montserrat" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:id="@+id/Thermometer"
+                    android:layout_gravity="center"
+                    android:src="@raw/thermometer"
+                    android:layout_marginLeft="22dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0">
+
+                <TextView
+                    android:id="@+id/MaximumTemperatureText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Max"
+                    android:textSize="15dp"
+                    android:gravity="left"
+                    android:fontFamily="Montserrat" />
+
+                <TextView
+                    android:id="@+id/MinimumTemperatureText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Min"
+                    android:textSize="15dp"
+                    android:gravity="left"
+                    android:fontFamily="Montserrat" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
