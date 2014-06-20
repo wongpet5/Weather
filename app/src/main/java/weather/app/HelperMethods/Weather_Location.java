@@ -53,8 +53,6 @@ public class Weather_Location
         }
     }
 
-
-
     public Location GetLocation()
     {
         return currentLocation;

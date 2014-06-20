@@ -66,13 +66,13 @@ public class Weather_Network {
                 host = "/data/2.5/weather";
             }
             else // if (mode == 2)
-            {
-                query = "lat=" + latitude + "&lon=" + longitude + "&cnt=10&mode=json&APPID=cbf2998a2c82e81ab7df43b533bf019c";
-                host = "/data/2.5/forecast";
+            {                                    /* api.openweathermap.org/data/2.5/forecast/daily?q=London&mode=xml&units=metric&cnt=7 */
+                query = "lat=" + latitude + "&lon=" + longitude + "&cnt=10&mode=xml&units=metric&APPID=cbf2998a2c82e81ab7df43b533bf019c";
+                host = "/data/2.5/forecast/daily";
             }
 
             URI uri = new URI("http", "api.openweathermap.org", host, query, null);
-            Log.d("WeatherURL", uri.toASCIIString());
+            //Log.d("WeatherURL", uri.toASCIIString());
             URL url = new URL(uri.toASCIIString());
 
             URLConnection conn = url.openConnection();

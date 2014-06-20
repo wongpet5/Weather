@@ -24,6 +24,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.Calendar;
 
+import weather.app.Classes.FutureWeather;
+import weather.app.HelperMethods.FutureWeather_XMLParse;
 import weather.app.HelperMethods.Weather_Location;
 import weather.app.HelperMethods.Weather_Network;
 import weather.app.HelperMethods.Weather_XMLParse;
@@ -73,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
                 Weather_Network weatherCall = new Weather_Network();
 
                 String weatherXML = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 1);
-                Log.d("Today Fragment", weatherXML);
+                //Log.d("Today Fragment", weatherXML);
 
                 // Parse Current Weather Conditions XML
                 final Weather_XMLParse weatherXMLParse = new Weather_XMLParse(weatherXML);
@@ -87,16 +89,30 @@ public class MainActivity extends ActionBarActivity {
                     throw new RuntimeException(e2);
                 }
 
-                // Get Future Weather Conditions
-                String weatherJSONFuture = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 2);
 
-                Log.d("Future Weather JSON", weatherJSONFuture);
+
+                // GET THE FUTURE WEATHER
+                String weatherXMLFuture = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 2);
+
+                Log.d("Future Weather XML", weatherXMLFuture);
+                // Parse Future Weather Conditions XML
+                final FutureWeather_XMLParse futureXMLParse = new FutureWeather_XMLParse(weatherXMLFuture);
+                try {
+                    futureXMLParse.ParseWeatherXML();
+                } catch (XmlPullParserException e1) {
+                    throw new RuntimeException(e1);
+                }
+                catch (IOException e2) {
+                    throw new RuntimeException(e2);
+                }
+
+
 
                 //Set the values for the Widget Controls
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        SetUIControls(weatherXMLParse);
+                        SetUIControls(weatherXMLParse, futureXMLParse);
                     }
                 });
             }
@@ -104,12 +120,7 @@ public class MainActivity extends ActionBarActivity {
         t.start();
     }
 
-    private void SetUIControls(Weather_XMLParse weatherXMLParse) {
-
-        // Set the Date
-        //TextView dateTextView = (TextView) getActivity().findViewById(R.id.DateTimeText);
-        //Calendar c = Calendar.getInstance();
-        //dateTextView.setText(c.getTime().toString());
+    private void SetUIControls(Weather_XMLParse weatherXMLParse, FutureWeather_XMLParse futureXMLParse) {
 
         // Set the Day of the Week
         TextView dateTextView = (TextView) findViewById(R.id.Day);
@@ -181,14 +192,26 @@ public class MainActivity extends ActionBarActivity {
         TextView maxTemperatureText = (TextView) findViewById(R.id.MaximumTemperatureText);
         maxTemperatureText.setText("High: " + (int)Math.round(weatherXMLParse.getCurrentWeather().maxTemp) + " °C");
 
-        // Weather Image uses SVG
-        //ImageView weatherImage = (ImageView) getActivity().findViewById(R.id.WeatherImage);
-        //SVG svg = SVGParser.getSVGFromResource(getResources(), R.raw.cloud);
-        //Drawable drawable = svg.createPictureDrawable();
-        //weatherImage.setImageDrawable(drawable);
-
         // Weather Image uses PNG
         ImageView weatherImage = (ImageView) findViewById(R.id.WeatherImage);
         weatherImage.setImageResource(R.raw.fair);
+
+
+
+        // GET THE FUTURE WEATHER
+        Fragmentfutureforecast futureForecast = (Fragmentfutureforecast)(getSupportFragmentManager().findFragmentById((R.id.futureForecastFragment)));
+        futureForecast.setFragmentControlData(futureXMLParse);
+
+
+        // TEST STUFF 
+        //Fragmentfutureforecast futureForecast = (Fragmentfutureforecast)(getSupportFragmentManager().findFragmentById((R.id.futureForecastFragment)));
+
+        //if (futureForecast != null) {
+        //    futureForecast.setTextBox();
+        //}
+
+        // END OF TEST STUFF
     }
+
+
 }
