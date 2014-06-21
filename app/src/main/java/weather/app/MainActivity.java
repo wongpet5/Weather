@@ -3,6 +3,7 @@ package weather.app;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.view.*;
@@ -61,7 +63,14 @@ public class MainActivity extends ActionBarActivity {
 
         // Thread to initiate the call to get current location weather information
         startThread();
+
+        DemoCollectionPagerAdapter pageAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
+        ViewPager pager = (ViewPager) findViewById(R.id.myViewPager);
+
+        pager.setAdapter(pageAdapter);
+
     }
+
 
     // Web Calls cannot be done on the main thread, therefore they will be done on a secondary thread
     protected void startThread() {
@@ -199,8 +208,8 @@ public class MainActivity extends ActionBarActivity {
 
 
         // GET THE FUTURE WEATHER
-        Fragmentfutureforecast futureForecast = (Fragmentfutureforecast)(getSupportFragmentManager().findFragmentById((R.id.futureForecastFragment)));
-        futureForecast.setFragmentControlData(futureXMLParse);
+        //Fragmentfutureforecast futureForecast = (Fragmentfutureforecast)(getSupportFragmentManager().findFragmentById((R.id.futureForecastFragment)));
+        //futureForecast.setFragmentControlData(futureXMLParse);
 
 
         // TEST STUFF 

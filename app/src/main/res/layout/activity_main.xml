@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#046617">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal"
@@ -124,17 +125,23 @@
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linlayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1.0"> <!-- This will have 50% of the screen -->
 
-        <fragment
+      <!--  <fragment
             android:id="@+id/futureForecastFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:name="weather.app.Fragmentfutureforecast"
             />
+-->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/myViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

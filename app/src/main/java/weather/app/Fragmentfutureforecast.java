@@ -18,6 +18,8 @@ import weather.app.HelperMethods.FutureWeather_XMLParse;
 
 public class Fragmentfutureforecast extends Fragment {
 
+    public static final String ARG_OBJECT = "object";
+
     Hashtable<Integer, Integer> numbers = new Hashtable<Integer, Integer>();
     Hashtable<Integer, Integer> lowerTempHash = new Hashtable<Integer, Integer>();
     Hashtable<Integer, Integer> upperTempHash = new Hashtable<Integer, Integer>();
