@@ -11,8 +11,9 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import weather.app.Classes.FutureWeather;
+
 import weather.app.Classes.FutureWeatherList;
+import weather.app.Classes.Weather.FutureWeather;
 
 public class FutureWeather_XMLParse {
 
@@ -53,7 +54,7 @@ public class FutureWeather_XMLParse {
                     for (int i = 0; i < xpp.getAttributeCount(); i++)
                     {
                         if (xpp.getAttributeName(i).equalsIgnoreCase("day")) {
-                            futureWeather.dayString = xpp.getAttributeValue(i);
+                            futureWeather.weatherDescription = xpp.getAttributeValue(i);
                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                             try {
                                 futureWeather.day = dateFormat.parse(xpp.getAttributeValue(i));
@@ -73,7 +74,7 @@ public class FutureWeather_XMLParse {
 
                             String temperature = xpp.getAttributeValue(i);
                             try {
-                                futureWeather.IconId = NumberFormat.getInstance().parse((temperature)).intValue();
+                                futureWeather.weatherIconId = NumberFormat.getInstance().parse((temperature)).intValue();
                             } catch (ParseException e1) {
                                 throw new  RuntimeException(e1);
                             }
@@ -121,7 +122,7 @@ public class FutureWeather_XMLParse {
                     for (int i = 0; i < xpp.getAttributeCount(); i++)
                     {
                         if (xpp.getAttributeName(i).equalsIgnoreCase("value")) {
-                            futureWeather.clouds = xpp.getAttributeValue(i);
+                            futureWeather.weatherDescription = xpp.getAttributeValue(i);
                         }
                     }
                 }

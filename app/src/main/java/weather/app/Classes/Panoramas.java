@@ -8,6 +8,14 @@ public class Panoramas {
     public int count ;
     public boolean hasMore;
     public PanoramasMapLocation panoromasMapLocation;
-    public List<PanoramasPhoto> panomarasPhotos= new ArrayList<PanoramasPhoto>();
+    public List<PanoramasPhoto> panomarasPhotos;
+
+    public Panoramas()
+    {
+        count = 0;
+        hasMore = true;
+        panoromasMapLocation = new PanoramasMapLocation();
+        panomarasPhotos = new ArrayList<PanoramasPhoto>();
+    }
 
 }

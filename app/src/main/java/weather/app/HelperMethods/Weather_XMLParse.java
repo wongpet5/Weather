@@ -1,23 +1,16 @@
 package weather.app.HelperMethods;
 
-import android.util.Xml;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
 
-import weather.app.Classes.CurrentWeather;
+import weather.app.Classes.Weather.CurrentWeather;
+
 
 public class Weather_XMLParse
 {
@@ -122,7 +115,7 @@ public class Weather_XMLParse
                         if (xpp.getAttributeName(i).equalsIgnoreCase("min")) {
                             String minTemp = xpp.getAttributeValue(i);
                             try {
-                                currentWeather.minTemp = ((Number) NumberFormat.getInstance().parse(minTemp)).doubleValue() ;
+                                currentWeather.lowTemp = ((Number) NumberFormat.getInstance().parse(minTemp)).doubleValue() ;
                             } catch (ParseException e2) {
                                 throw new RuntimeException(e2);
                             }
@@ -131,7 +124,7 @@ public class Weather_XMLParse
                         if (xpp.getAttributeName(i).equalsIgnoreCase("max")) {
                             String maxTemp = xpp.getAttributeValue(i);
                             try {
-                                currentWeather.maxTemp = ((Number) NumberFormat.getInstance().parse(maxTemp)).doubleValue() ;
+                                currentWeather.highTemp = ((Number) NumberFormat.getInstance().parse(maxTemp)).doubleValue() ;
                             } catch (ParseException e2) {
                                 throw new RuntimeException(e2);
                             }
@@ -177,7 +170,7 @@ public class Weather_XMLParse
                             String weatherId = xpp.getAttributeValue(i);
 
                             try {
-                                currentWeather.weatherId = ((Number) NumberFormat.getInstance().parse(weatherId)).intValue() ;
+                                currentWeather.weatherIconId = ((Number) NumberFormat.getInstance().parse(weatherId)).intValue() ;
                             } catch (ParseException e1) {
                                 throw new RuntimeException(e1);
                             }

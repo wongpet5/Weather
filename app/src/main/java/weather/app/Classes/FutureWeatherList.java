@@ -1,8 +1,9 @@
 package weather.app.Classes;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import weather.app.Classes.Weather.FutureWeather;
 
 public class FutureWeatherList {
 
@@ -15,6 +16,8 @@ public class FutureWeatherList {
     public void AddToWeatherList(FutureWeather item){
         weatherList.add(item);
     }
+
+    public List<FutureWeather> GetWeatherList() { return weatherList; }
 
     public FutureWeather GetItem(int i)
     {

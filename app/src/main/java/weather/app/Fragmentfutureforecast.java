@@ -12,7 +12,8 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.Hashtable;
 
-import weather.app.Classes.FutureWeather;
+
+import weather.app.Classes.Weather.FutureWeather;
 import weather.app.HelperMethods.FutureWeather_XMLParse;
 import weather.app.HelperMethods.WeatherIdIcons;
 
@@ -78,7 +79,7 @@ public class Fragmentfutureforecast extends Fragment {
     }
     public void SetWeatherImage(FutureWeather item, int num) {
         ImageView weatherImage = (ImageView) getView().findViewById(weatherHash.get(num));
-        int iconId = WeatherIdIcons.SetWeatherCondition(item.IconId, 1);
+        int iconId = WeatherIdIcons.SetWeatherCondition(item.weatherIconId, 1);
 
         if (iconId != 0)
         {
