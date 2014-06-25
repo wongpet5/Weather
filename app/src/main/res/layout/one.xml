@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:id="@+id/One"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/CityText"
-        android:layout_width="fill_parent"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ONE"
-        android:gravity="center_horizontal"
-        android:fontFamily="Montserrat"
-        android:textSize="17dp"
-        android:layout_marginTop="10dp"/>
+        android:gravity="top"
+        android:id="@+id/clothing"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_gravity="center"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:id="@+id/clothing2"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_gravity="center"
+        />
 
 </LinearLayout>

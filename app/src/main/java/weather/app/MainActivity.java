@@ -277,6 +277,9 @@ public class MainActivity extends ActionBarActivity {
         ImageView weatherImage = (ImageView) findViewById(R.id.WeatherImage);
         int iconId = WeatherIdIcons.SetWeatherCondition(weatherXMLParse.getCurrentWeather().weatherId, 0);
 
+        // Set Clothing
+        pageAdapter.SetClothingForecast(weatherXMLParse.getCurrentWeather());
+
         if (iconId != 0)
         {
             weatherImage.setImageBitmap(WeatherIdIcons.invertImage(BitmapFactory.decodeResource(getResources(), iconId )));

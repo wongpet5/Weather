@@ -9,20 +9,23 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import weather.app.Classes.CurrentWeather;
 import weather.app.HelperMethods.FutureWeather_XMLParse;
 
 public class DemoCollectionPagerAdapter extends FragmentPagerAdapter
 {
     private List<Fragment> fragments;
     private Fragmentfutureforecast fragment = new Fragmentfutureforecast();
-
+    private One one = new One();
 
     public DemoCollectionPagerAdapter(FragmentManager fm)
     {
         super(fm);
         this.fragments = new ArrayList<Fragment>();
         fragments.add(fragment);
-        fragments.add(new One());
+        fragments.add(one);
+
+
     }
 
     @Override
@@ -38,6 +41,11 @@ public class DemoCollectionPagerAdapter extends FragmentPagerAdapter
     public void SetFutureForecaseFragment(FutureWeather_XMLParse futureXMLParse)
     {
         fragment.setFragmentControlData(futureXMLParse);
+    }
+
+    public void SetClothingForecast(CurrentWeather currentWeather)
+    {
+        one.SetClothing(currentWeather);
     }
 
 /*
