@@ -12,9 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Day #1"
-        android:textColor="#000000"
+        android:textColor="#ffffffff"
         android:textSize="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
         android:gravity="center_horizontal"
         android:layout_column="0"
         android:layout_row="0"
@@ -25,8 +26,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Day #2"
-        android:textColor="#000000"
+        android:textColor="#ffffffff"
         android:textSize="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
         android:layout_column="0"
@@ -38,8 +40,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Day #3"
-        android:textColor="#000000"
+        android:textColor="#ffffffff"
         android:textSize="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
         android:layout_column="0"
@@ -52,8 +55,9 @@
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:text="Day #4"
-        android:textColor="#000000"
+        android:textColor="#ffffffff"
         android:textSize="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
         android:layout_row="3"
@@ -63,8 +67,9 @@
         android:id="@+id/lblDay5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
         android:text="Day #5"
-        android:textColor="#000000"
+        android:textColor="#ffffffff"
         android:textSize="15dp"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
@@ -77,8 +82,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Day #6"
-        android:textColor="#000000"
+        android:textColor="#ffffffff"
         android:textSize="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
         android:layout_column="0"
@@ -86,20 +92,16 @@
         android:fontFamily="Montserrat" />
 
 
-
-
-
-
     <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="20dp"
-    android:gravity="top"
-    android:id="@+id/WeatherImage1"
-    android:layout_marginTop="10dp"
-    android:layout_gravity="center"
-    android:layout_column="1"
-    android:layout_row="0"
-    android:src="@raw/na" />
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:gravity="top"
+        android:id="@+id/WeatherImage1"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_gravity="center"
+        android:layout_column="1"
+        android:layout_row="0" />
 
      <ImageView
         android:layout_width="wrap_content"
@@ -107,10 +109,10 @@
         android:gravity="top"
         android:id="@+id/WeatherImage2"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_gravity="center"
         android:layout_column="1"
-        android:layout_row="1"
-        android:src="@raw/na" />
+        android:layout_row="1"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -118,10 +120,10 @@
         android:gravity="top"
         android:id="@+id/WeatherImage3"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_gravity="center"
         android:layout_column="1"
-        android:layout_row="2"
-        android:src="@raw/na" />
+        android:layout_row="2"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -129,10 +131,10 @@
         android:gravity="top"
         android:id="@+id/WeatherImage4"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_gravity="center"
         android:layout_column="1"
-        android:layout_row="3"
-        android:src="@raw/na" />
+        android:layout_row="3"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -140,10 +142,10 @@
         android:gravity="top"
         android:id="@+id/WeatherImage5"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_gravity="center"
         android:layout_column="1"
-        android:layout_row="4"
-        android:src="@raw/na" />
+        android:layout_row="4" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -151,175 +153,100 @@
         android:gravity="top"
         android:id="@+id/WeatherImage6"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_gravity="center"
         android:layout_column="1"
-        android:layout_row="5"
-        android:src="@raw/na" />
+        android:layout_row="5" />
 
 
-
-
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
-        android:layout_column="2"
+    <TextView
+        android:id="@+id/lblTemp1a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp #1a"
+        android:textColor="#ffffffff"
+        android:textSize="15dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
         android:layout_row="0"
-        android:layout_marginTop="10dp">
-        <TextView
-            android:id="@+id/lblTemp1a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #1a"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="2dp"
-            android:fontFamily="Montserrat" />
-        <TextView
-            android:id="@+id/lblTemp1b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #1b"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:fontFamily="Montserrat" />
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:layout_column="2"
+        android:fontFamily="Montserrat" />
+
+    <TextView
+        android:id="@+id/lblTemp2a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp #2a"
+        android:textColor="#ffffffff"
+        android:textSize="15dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_row="1"
-        android:layout_marginTop="5dp">
-        <TextView
-            android:id="@+id/lblTemp2a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #2a"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="2dp"
-            android:fontFamily="Montserrat" />
-        <TextView
-            android:id="@+id/lblTemp2b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #2b"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:fontFamily="Montserrat" />
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:layout_column="2"
+        android:fontFamily="Montserrat" />
+
+    <TextView
+        android:id="@+id/lblTemp3a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp #3a"
+        android:textColor="#ffffffff"
+        android:textSize="15dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_row="2"
-        android:layout_marginTop="5dp">
-        <TextView
-            android:id="@+id/lblTemp3a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #3a"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="2dp"
-            android:fontFamily="Montserrat" />
-        <TextView
-            android:id="@+id/lblTemp3b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #3b"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:fontFamily="Montserrat" />
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:layout_column="2"
+        android:fontFamily="Montserrat" />
+
+
+    <TextView
+        android:id="@+id/lblTemp4a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp #4a"
+        android:textColor="#ffffffff"
+        android:textSize="15dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_row="3"
-        android:layout_marginTop="5dp">
-        <TextView
-            android:id="@+id/lblTemp4a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #4a"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="2dp"
-            android:fontFamily="Montserrat" />
-        <TextView
-            android:id="@+id/lblTemp4b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #4b"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:fontFamily="Montserrat" />
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:layout_column="2"
+        android:fontFamily="Montserrat" />
+
+
+
+    <TextView
+        android:id="@+id/lblTemp5a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp #5a"
+        android:textColor="#ffffffff"
+        android:textSize="15dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_row="4"
-        android:layout_marginTop="5dp">
-        <TextView
-            android:id="@+id/lblTemp5a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #5a"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="2dp"
-            android:fontFamily="Montserrat" />
-        <TextView
-            android:id="@+id/lblTemp5b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #5b"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:fontFamily="Montserrat" />
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
         android:layout_column="2"
+        android:fontFamily="Montserrat" />
+
+
+
+    <TextView
+        android:id="@+id/lblTemp6a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temp #6a"
+        android:textColor="#ffffffff"
+        android:textSize="15dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
         android:layout_row="5"
-        android:layout_marginTop="5dp">
-        <TextView
-            android:id="@+id/lblTemp6a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #6a"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="2dp"
-            android:fontFamily="Montserrat" />
-        <TextView
-            android:id="@+id/lblTemp6b"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temp #6b"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:gravity="center_horizontal"
-            android:layout_marginLeft="2dp"
-            android:fontFamily="Montserrat" />
-    </LinearLayout>
+        android:layout_column="2"
+        android:fontFamily="Montserrat" />
+
 
 </GridLayout>

@@ -65,6 +65,22 @@ public class FutureWeather_XMLParse {
                     }
                 }
 
+                if (xpp.getName().equalsIgnoreCase("symbol")) {
+
+                    for (int i = 0; i < xpp.getAttributeCount(); i++)
+                    {
+                        if (xpp.getAttributeName(i).equalsIgnoreCase("number")) {
+
+                            String temperature = xpp.getAttributeValue(i);
+                            try {
+                                futureWeather.IconId = NumberFormat.getInstance().parse((temperature)).intValue();
+                            } catch (ParseException e1) {
+                                throw new  RuntimeException(e1);
+                            }
+                        }
+                    }
+                }
+
                 if (xpp.getName().equalsIgnoreCase("temperature")) {
 
                     for (int i = 0; i < xpp.getAttributeCount(); i++)

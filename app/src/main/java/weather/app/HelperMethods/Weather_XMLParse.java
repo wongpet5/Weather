@@ -173,6 +173,17 @@ public class Weather_XMLParse
                 {
                     for (int i = 0; i < xpp.getAttributeCount(); i++)
                     {
+                        if (xpp.getAttributeName(i).equalsIgnoreCase("number")) {
+                            String weatherId = xpp.getAttributeValue(i);
+
+                            try {
+                                currentWeather.weatherId = ((Number) NumberFormat.getInstance().parse(weatherId)).intValue() ;
+                            } catch (ParseException e1) {
+                                throw new RuntimeException(e1);
+                            }
+
+                        }
+
                         if (xpp.getAttributeName(i).equalsIgnoreCase("value")) {
                             currentWeather.weatherDescription = xpp.getAttributeValue(i);
                         }
@@ -191,7 +202,6 @@ public class Weather_XMLParse
             eventType = xpp.next();
         }
 
-        System.out.println("End document");
     }
 
 }

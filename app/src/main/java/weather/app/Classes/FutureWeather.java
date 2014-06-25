@@ -9,4 +9,5 @@ public class FutureWeather {
     public double lowTemp;
     public double highTemp;
     public String clouds; // Weather Condition
+    public int IconId;
 }

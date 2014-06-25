@@ -20,4 +20,5 @@ public class CurrentWeather {
     private String pressureUnit;
     public String weatherDescription;
     public String weatherIcon;
+    public int weatherId;
 }

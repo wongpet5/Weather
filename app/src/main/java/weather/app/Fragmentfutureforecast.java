@@ -1,6 +1,6 @@
 package weather.app;
 
-import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,11 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Hashtable;
 
 import weather.app.Classes.FutureWeather;
 import weather.app.HelperMethods.FutureWeather_XMLParse;
+import weather.app.HelperMethods.WeatherIdIcons;
 
 public class Fragmentfutureforecast extends Fragment {
 
@@ -22,7 +22,6 @@ public class Fragmentfutureforecast extends Fragment {
 
     Hashtable<Integer, Integer> numbers = new Hashtable<Integer, Integer>();
     Hashtable<Integer, Integer> lowerTempHash = new Hashtable<Integer, Integer>();
-    Hashtable<Integer, Integer> upperTempHash = new Hashtable<Integer, Integer>();
     Hashtable<Integer, Integer> weatherHash = new Hashtable<Integer, Integer>();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,13 +40,6 @@ public class Fragmentfutureforecast extends Fragment {
         lowerTempHash.put(5, R.id.lblTemp5a);
         lowerTempHash.put(6, R.id.lblTemp6a);
 
-        upperTempHash.put(1, R.id.lblTemp1b);
-        upperTempHash.put(2, R.id.lblTemp2b);
-        upperTempHash.put(3, R.id.lblTemp3b);
-        upperTempHash.put(4, R.id.lblTemp4b);
-        upperTempHash.put(5, R.id.lblTemp5b);
-        upperTempHash.put(6, R.id.lblTemp6b);
-
         weatherHash.put(1, R.id.WeatherImage1);
         weatherHash.put(2, R.id.WeatherImage2);
         weatherHash.put(3, R.id.WeatherImage3);
@@ -63,8 +55,7 @@ public class Fragmentfutureforecast extends Fragment {
         for (int i = 1; i <= 6; i++)
         {
             SetDay(futureXMLParse.getFutureWeather().GetItem(i), i);
-            SetMinTemperature(futureXMLParse.getFutureWeather().GetItem(i), i);
-            SetMaxTemperature(futureXMLParse.getFutureWeather().GetItem(i), i);
+            SetAverageTemperature(futureXMLParse.getFutureWeather().GetItem(i), i);
             SetWeatherImage(futureXMLParse.getFutureWeather().GetItem(i), i);
         }
     }
@@ -79,23 +70,20 @@ public class Fragmentfutureforecast extends Fragment {
         dayOneTextView.setText(weekDay);
     }
 
-    public void SetMinTemperature(FutureWeather item, int num) {
-        String temp = Long.toString(Math.round(item.lowTemp));
+    public void SetAverageTemperature(FutureWeather item, int num) {
+        String temp = Long.toString((Math.round(item.lowTemp) + Math.round(item.highTemp))/2);
 
         TextView dayOneTextView = (TextView) getView().findViewById(lowerTempHash.get(num));
-        dayOneTextView.setText(temp + " - ");
+        dayOneTextView.setText(temp + " °C");
     }
-
-    public void SetMaxTemperature(FutureWeather item, int num) {
-        String temp = Long.toString(Math.round(item.highTemp));
-
-        TextView dayOneTextView = (TextView) getView().findViewById(upperTempHash.get(num));
-        dayOneTextView.setText(temp);
-    }
-
     public void SetWeatherImage(FutureWeather item, int num) {
         ImageView weatherImage = (ImageView) getView().findViewById(weatherHash.get(num));
-        weatherImage.setImageResource(R.raw.fair);
+        int iconId = WeatherIdIcons.SetWeatherCondition(item.IconId, 1);
+
+        if (iconId != 0)
+        {
+            weatherImage.setImageBitmap(WeatherIdIcons.invertImage(BitmapFactory.decodeResource(getResources(), iconId)));
+        }
     }
 
     private String ReturnDayString(int dayOfWeek)

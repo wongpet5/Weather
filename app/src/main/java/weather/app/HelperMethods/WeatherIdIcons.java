@@ -1,0 +1,83 @@
+package weather.app.HelperMethods;
+
+import android.graphics.Bitmap;
+import android.graphics.Color;
+
+import weather.app.R;
+
+public class WeatherIdIcons
+{
+    public WeatherIdIcons() { }
+
+    // 0 = large size
+    // 1 = small size
+    public static int SetWeatherCondition(int WeatherId, int size)
+    {
+        int iconId = 0;
+        if (WeatherId == 500 || WeatherId == 501 ||  WeatherId == 502 ||  WeatherId == 503 ||  WeatherId == 504)
+        {
+            if (size == 0)
+                iconId = R.raw.littlerain32;
+            else if (size == 1)
+                iconId = R.raw.littlerain128;
+        }
+
+        else if (WeatherId == 520 || WeatherId == 521 ||  WeatherId == 522 ||  WeatherId == 531)
+        {
+            if (size == 0)
+                iconId = R.raw.rain32;
+            else if (size == 1)
+                iconId = R.raw.rain128;
+        }
+
+        else if (WeatherId == 701 || WeatherId == 711 ||  WeatherId == 721 ||  WeatherId == 731 ||  WeatherId == 741 ||  WeatherId == 751 ||  WeatherId == 761 ||  WeatherId == 762 ||
+                WeatherId == 771 || WeatherId == 781)
+        {
+            if (size == 0)
+                iconId = R.raw.partlycloudynight128;
+        }
+
+        else if (WeatherId == 800 || WeatherId == 801 ||  WeatherId == 802 ||  WeatherId == 803 ||  WeatherId == 804)
+        {
+            if (size == 0)
+                iconId = R.raw.clouds128;
+            else if (size == 1)
+                iconId = R.raw.clouds32;
+        }
+
+        return iconId;
+    }
+
+    public static Bitmap invertImage(Bitmap src) {
+        // create new bitmap with the same attributes(width,height)
+        //as source bitmap
+        Bitmap bmOut = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
+        // color info
+        int A, R, G, B;
+        int pixelColor;
+        // image size
+        int height = src.getHeight();
+        int width = src.getWidth();
+
+        // scan through every pixel
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                // get one pixel
+                pixelColor = src.getPixel(x, y);
+                // saving alpha channel
+                A = Color.alpha(pixelColor);
+                // inverting byte for each R/G/B channel
+                R = 255 - Color.red(pixelColor);
+                G = 255 - Color.green(pixelColor);
+                B = 255 - Color.blue(pixelColor);
+                // set newly-inverted pixel to output image
+                bmOut.setPixel(x, y, Color.argb(A, R, G, B));
+            }
+        }
+
+        // return final bitmap
+        return bmOut;
+    }
+}

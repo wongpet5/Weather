@@ -1,12 +1,18 @@
 package weather.app;
 
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,14 +26,26 @@ import android.app.Fragment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.app.FragmentManager;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import java.io.UnsupportedEncodingException;
+import java.lang.Object;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.ParseException;
 import java.util.Calendar;
-
+import android.graphics.Color;
 import weather.app.Classes.FutureWeather;
 import weather.app.HelperMethods.FutureWeather_XMLParse;
+import weather.app.HelperMethods.Location_GetBackGroundImage;
+import weather.app.HelperMethods.WeatherIdIcons;
 import weather.app.HelperMethods.Weather_Location;
 import weather.app.HelperMethods.Weather_Network;
 import weather.app.HelperMethods.Weather_XMLParse;
@@ -40,6 +58,12 @@ public class MainActivity extends ActionBarActivity {
     private Handler handler;
     private Context context = null;
     private View v = null;
+
+    ImageView img;
+    Bitmap bitmap;
+    ProgressDialog pDialog;
+
+    DemoCollectionPagerAdapter pageAdapter;
 
     @Override
     public View findViewById(int id) {
@@ -64,11 +88,10 @@ public class MainActivity extends ActionBarActivity {
         // Thread to initiate the call to get current location weather information
         startThread();
 
-        DemoCollectionPagerAdapter pageAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
+        pageAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
         ViewPager pager = (ViewPager) findViewById(R.id.myViewPager);
 
         pager.setAdapter(pageAdapter);
-
     }
 
 
@@ -80,11 +103,22 @@ public class MainActivity extends ActionBarActivity {
                 // Get current location
                 Weather_Location weatherLocation = new Weather_Location(getApplicationContext());
 
+                String jString = "";
+                // Get Background Image for current location
+                Location_GetBackGroundImage background = new Location_GetBackGroundImage();
+
+                try {
+                   background.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 1);
+                }
+                catch (IOException e1) {}
+                catch (ParseException e2) {}
+
+                final String locBackGround = background.panoramas.panomarasPhotos.get(0).photo_file_url ;
+
                 // Get Current Weather Conditions
                 Weather_Network weatherCall = new Weather_Network();
 
                 String weatherXML = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 1);
-                //Log.d("Today Fragment", weatherXML);
 
                 // Parse Current Weather Conditions XML
                 final Weather_XMLParse weatherXMLParse = new Weather_XMLParse(weatherXML);
@@ -99,11 +133,9 @@ public class MainActivity extends ActionBarActivity {
                 }
 
 
-
                 // GET THE FUTURE WEATHER
                 String weatherXMLFuture = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 2);
 
-                Log.d("Future Weather XML", weatherXMLFuture);
                 // Parse Future Weather Conditions XML
                 final FutureWeather_XMLParse futureXMLParse = new FutureWeather_XMLParse(weatherXMLFuture);
                 try {
@@ -116,20 +148,60 @@ public class MainActivity extends ActionBarActivity {
                 }
 
 
-
                 //Set the values for the Widget Controls
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        SetUIControls(weatherXMLParse, futureXMLParse);
+                        SetUIControls(weatherXMLParse, futureXMLParse, locBackGround);
                     }
                 });
+
             }
         };
         t.start();
     }
 
-    private void SetUIControls(Weather_XMLParse weatherXMLParse, FutureWeather_XMLParse futureXMLParse) {
+    public static Bitmap loadBitmap(String URL, BitmapFactory.Options options) {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        try {
+            in = OpenHttpConnection(URL);
+            bitmap = BitmapFactory.decodeStream(in, null, options);
+            in.close();
+        } catch (IOException e1) {
+        }
+        return bitmap;
+    }
+
+    private static InputStream OpenHttpConnection(String strURL)
+            throws IOException {
+        InputStream inputStream = null;
+        URL url = new URL(strURL);
+        URLConnection conn = url.openConnection();
+
+        try {
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
+
+            if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                inputStream = httpConn.getInputStream();
+            }
+        } catch (Exception ex) {
+        }
+        return inputStream;
+    }
+
+    private void SetUIControls(Weather_XMLParse weatherXMLParse, FutureWeather_XMLParse futureXMLParse, String JSON) {
+
+        // Set Background
+        img = (ImageView)findViewById(R.id.background);
+        //img.setScaleType(ImageView.ScaleType.FIT_XY);
+        // Change Opacity of Image
+        int opacity = 200;
+        img.setBackgroundColor(opacity * 0x1000000);
+        new LoadImage().execute(JSON);
+
 
         // Set the Day of the Week
         TextView dateTextView = (TextView) findViewById(R.id.Day);
@@ -203,24 +275,40 @@ public class MainActivity extends ActionBarActivity {
 
         // Weather Image uses PNG
         ImageView weatherImage = (ImageView) findViewById(R.id.WeatherImage);
-        weatherImage.setImageResource(R.raw.fair);
+        int iconId = WeatherIdIcons.SetWeatherCondition(weatherXMLParse.getCurrentWeather().weatherId, 0);
 
+        if (iconId != 0)
+        {
+            weatherImage.setImageBitmap(WeatherIdIcons.invertImage(BitmapFactory.decodeResource(getResources(), iconId )));
+        }
 
+        // Set Future
+        pageAdapter.SetFutureForecaseFragment(futureXMLParse);
 
-        // GET THE FUTURE WEATHER
-        //Fragmentfutureforecast futureForecast = (Fragmentfutureforecast)(getSupportFragmentManager().findFragmentById((R.id.futureForecastFragment)));
-        //futureForecast.setFragmentControlData(futureXMLParse);
-
-
-        // TEST STUFF 
-        //Fragmentfutureforecast futureForecast = (Fragmentfutureforecast)(getSupportFragmentManager().findFragmentById((R.id.futureForecastFragment)));
-
-        //if (futureForecast != null) {
-        //    futureForecast.setTextBox();
-        //}
-
-        // END OF TEST STUFF
     }
 
+    private class LoadImage extends AsyncTask<String, String, Bitmap> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected Bitmap doInBackground(String... args) {
+            try {
+                bitmap = BitmapFactory.decodeStream((InputStream)new URL(args[0]).getContent());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+        protected void onPostExecute(Bitmap image) {
+            if(image != null){
+                Log.d("Background image: ", "processing completed.");
+                img.setImageBitmap(image);
+            }else{
+                Log.d("Background image: ", "processing still in progress.");
+            }
+        }
+    }
 
 }

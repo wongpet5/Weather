@@ -72,7 +72,6 @@ public class Weather_Network {
             }
 
             URI uri = new URI("http", "api.openweathermap.org", host, query, null);
-            //Log.d("WeatherURL", uri.toASCIIString());
             URL url = new URL(uri.toASCIIString());
 
             URLConnection conn = url.openConnection();
