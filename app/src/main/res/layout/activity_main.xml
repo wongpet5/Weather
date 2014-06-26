@@ -18,6 +18,10 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         >
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,7 +45,7 @@
                     android:fontFamily="Montserrat"
                     android:textSize="17dp"
                     android:textColor="#ffffffff"
-                    android:layout_marginTop="10dp"/>
+                    />
 
                 <TextView
                     android:id="@+id/CurrentTemperatureText"
@@ -55,8 +59,7 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="top"
+                    android:layout_height="wrap_content"
                     android:id="@+id/WeatherImage"
                     android:layout_gravity="center_horizontal"
                     />
@@ -75,7 +78,6 @@
                     android:layout_height="wrap_content"
                     android:text="Date"
                     android:textSize="17dp"
-                    android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
                     android:textColor="#ffffffff"
                     android:fontFamily="Montserrat" />
