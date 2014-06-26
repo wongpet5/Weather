@@ -14,7 +14,9 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.view.*;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
@@ -23,7 +25,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
-
 
 import weather.app.Classes.Weather.CurrentWeather;
 import weather.app.HelperMethods.FutureWeather_XMLParse;
@@ -66,21 +67,48 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onStart()
     {
-        // Call Parent
         super.onStart();
 
-        // Thread to initiate the call to get current location weather information
-        startThread();
+        BackGroundImageThread();
+        CurrentWeatherThread();
+        FutureWeatherThread();
 
         pageAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
         ViewPager pager = (ViewPager) findViewById(R.id.myViewPager);
-
         pager.setAdapter(pageAdapter);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-    // Web Calls cannot be done on the main thread, therefore they will be done on a secondary thread
-    protected void startThread() {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                openSearch();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openSearch()
+    {
+        Context context = getApplicationContext();
+        CharSequence text = "Hello toast!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    protected void BackGroundImageThread(){
         Thread t = new Thread() {
             public void run() {
 
@@ -92,16 +120,30 @@ public class MainActivity extends ActionBarActivity {
                 Location_GetBackGroundImage background = new Location_GetBackGroundImage();
 
                 try {
-                   background.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 1);
+                    background.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 1);
                 }
                 catch (IOException e1) {}
                 catch (ParseException e2) {}
 
                 final String locBackGround = background.panoramas.panomarasPhotos.get(0).photo_file_url ;
 
-                // Get Current Weather Conditions
-                Weather_Network weatherCall = new Weather_Network();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        SetBackground(locBackGround);
+                    }
+                });
+            }
+        };
+        t.start();
+    }
 
+    protected void CurrentWeatherThread(){
+        Thread t = new Thread() {
+            public void run() {
+
+                Weather_Location weatherLocation = new Weather_Location(getApplicationContext());
+                Weather_Network weatherCall = new Weather_Network();
                 String weatherXML = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 1);
 
                 // Parse Current Weather Conditions XML
@@ -116,7 +158,23 @@ public class MainActivity extends ActionBarActivity {
                     throw new RuntimeException(e2);
                 }
 
-                // GET THE FUTURE WEATHER
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        SetCurrentWeatherUIControls(weatherXMLParse);
+                    }
+                });
+            }
+        };
+        t.start();
+    }
+
+    protected void FutureWeatherThread() {
+        Thread t = new Thread() {
+            public void run() {
+
+                Weather_Location weatherLocation = new Weather_Location(getApplicationContext());
+                Weather_Network weatherCall = new Weather_Network();
                 String weatherXMLFuture = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 2);
 
                 // Parse Future Weather Conditions XML
@@ -130,11 +188,10 @@ public class MainActivity extends ActionBarActivity {
                     throw new RuntimeException(e2);
                 }
 
-                //Set the values for the Widget Controls
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        SetUIControls(weatherXMLParse, futureXMLParse, locBackGround);
+                        SetFutureWeather(futureXMLParse);
                     }
                 });
 
@@ -155,8 +212,8 @@ public class MainActivity extends ActionBarActivity {
         return bitmap;
     }
 
-    private static InputStream OpenHttpConnection(String strURL)
-            throws IOException {
+    private static InputStream OpenHttpConnection(String strURL) throws IOException
+    {
         InputStream inputStream = null;
         URL url = new URL(strURL);
         URLConnection conn = url.openConnection();
@@ -169,25 +226,26 @@ public class MainActivity extends ActionBarActivity {
             if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 inputStream = httpConn.getInputStream();
             }
-        } catch (Exception ex) {
         }
+        catch (Exception ex) {}
+
         return inputStream;
     }
 
-    private void SetUIControls(Weather_XMLParse weatherXMLParse, FutureWeather_XMLParse futureXMLParse, String JSON) {
-
-        // Set Background
+    private void SetBackground(String JSON)
+    {
         img = (ImageView)findViewById(R.id.background);
         new LoadImage().execute(JSON);
+    }
 
-        // Set Current Weather Conditions
+    private void SetCurrentWeatherUIControls(Weather_XMLParse weatherXMLParse)
+    {
         SetCurrentWeatherControls(weatherXMLParse.getCurrentWeather());
+    }
 
-        // Set Future
+    private void SetFutureWeather(FutureWeather_XMLParse futureXMLParse)
+    {
         pageAdapter.SetFutureForecaseFragment(futureXMLParse);
-
-        // Set Clothing Recommendations
-        pageAdapter.SetClothingForecast(weatherXMLParse.getCurrentWeather());
     }
 
     private class LoadImage extends AsyncTask<String, String, Bitmap> {
@@ -195,7 +253,6 @@ public class MainActivity extends ActionBarActivity {
         protected void onPreExecute() {
             super.onPreExecute();
         }
-
         protected Bitmap doInBackground(String... args) {
             try {
                 bitmap = BitmapFactory.decodeStream((InputStream)new URL(args[0]).getContent());
@@ -246,7 +303,8 @@ public class MainActivity extends ActionBarActivity {
         ImageView weatherImage = (ImageView) findViewById(R.id.WeatherImage);
         int iconId = WeatherIdIcons.SetWeatherCondition(currentWeather.weatherIconId, 1);
         if (iconId != 0) {
-            weatherImage.setImageBitmap(WeatherIdIcons.invertImage(BitmapFactory.decodeResource(getResources(), iconId )));
+            //weatherImage.setImageBitmap(WeatherIdIcons.invertImage(BitmapFactory.decodeResource(getResources(), iconId )));
+            weatherImage.setImageResource(iconId);
         }
     }
 

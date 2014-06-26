@@ -17,12 +17,11 @@ public class One extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.one, container, false);
-
     }
 
     public void SetClothing(CurrentWeather item)
     {
-
+        /*
         ImageView weatherImage = (ImageView) getView().findViewById(R.id.clothing);
         int iconId = R.raw.umbrella128;
 
@@ -38,6 +37,7 @@ public class One extends Fragment{
         {
             weatherImage2.setImageBitmap(WeatherIdIcons.invertImage(BitmapFactory.decodeResource(getResources(), iconId2)));
         }
+        */
     }
 
 

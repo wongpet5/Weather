@@ -7,10 +7,15 @@ public class WeatherDates {
     public WeatherDates() {}
 
     public static String GetWeatherDays() {
-        String weekDay = "";
 
         Calendar c = Calendar.getInstance();
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
+        return GetWeatherDays(dayOfWeek);
+    }
+
+    public static String GetWeatherDays(int dayOfWeek) {
+        String weekDay = "";
 
         if (Calendar.MONDAY == dayOfWeek) {
             weekDay = "Monday";
@@ -32,10 +37,16 @@ public class WeatherDates {
 
     public static String GetWeatherMonths() {
 
-        String dd = "";
-
         Calendar c = Calendar.getInstance();
         int month = c.get(Calendar.MONTH);
+
+        return GetWeatherMonths(month);
+    }
+
+    public static String GetWeatherMonths(int month) {
+
+        String dd = "";
+        Calendar c = Calendar.getInstance();
 
         if (month == Calendar.JANUARY) {
             dd = "January " + c.get(Calendar.DAY_OF_MONTH);
@@ -65,6 +76,5 @@ public class WeatherDates {
 
         return dd;
     }
-
 
 }

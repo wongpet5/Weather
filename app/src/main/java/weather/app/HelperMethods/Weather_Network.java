@@ -56,7 +56,6 @@ public class Weather_Network {
 
         try {
 
-            //
             String query = "";
             String host = "";
 
