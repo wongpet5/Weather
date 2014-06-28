@@ -1,22 +1,20 @@
 package weather.app;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.view.*;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
@@ -37,18 +35,11 @@ import weather.app.HelperMethods.Weather_XMLParse;
 
 public class MainActivity extends ActionBarActivity {
 
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-
+    private Fragmentfutureforecast future;
     private Handler handler;
-    private Context context = null;
-    private View v = null;
 
     ImageView img;
     Bitmap bitmap;
-    ProgressDialog pDialog;
-
-    DemoCollectionPagerAdapter pageAdapter;
 
     @Override
     public View findViewById(int id) {
@@ -60,7 +51,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize the Handler
+        future = new Fragmentfutureforecast();
+        getSupportFragmentManager().beginTransaction().add(R.id.linlayout, future, "tag").commit();
+
         handler = new Handler();
     }
 
@@ -72,10 +65,24 @@ public class MainActivity extends ActionBarActivity {
         BackGroundImageThread();
         CurrentWeatherThread();
         FutureWeatherThread();
+    }
 
-        pageAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
-        ViewPager pager = (ViewPager) findViewById(R.id.myViewPager);
-        pager.setAdapter(pageAdapter);
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
     }
 
     @Override
@@ -91,7 +98,11 @@ public class MainActivity extends ActionBarActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_search:
-                openSearch();
+
+                //Intent intent =  new Intent("weather.app.Citylist");
+                Intent intent =  new Intent(this, Citylist.class);
+                startActivity(intent);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -245,7 +256,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void SetFutureWeather(FutureWeather_XMLParse futureXMLParse)
     {
-        pageAdapter.SetFutureForecaseFragment(futureXMLParse);
+        future.setFragmentControlData(futureXMLParse);
     }
 
     private class LoadImage extends AsyncTask<String, String, Bitmap> {

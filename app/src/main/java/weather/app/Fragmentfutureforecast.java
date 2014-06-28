@@ -22,38 +22,57 @@ public class Fragmentfutureforecast extends Fragment {
 
     public static final String ARG_OBJECT = "object";
 
-    Hashtable<Integer, Integer> numbers = new Hashtable<Integer, Integer>();
-    Hashtable<Integer, Integer> lowerTempHash = new Hashtable<Integer, Integer>();
-    Hashtable<Integer, Integer> weatherHash = new Hashtable<Integer, Integer>();
+    public Hashtable<Integer, Integer> numbers;
+    public Hashtable<Integer, Integer> lowerTempHash;
+    public Hashtable<Integer, Integer> weatherHash;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        numbers.put(1, R.id.lblDay1);
-        numbers.put(2, R.id.lblDay2);
-        numbers.put(3, R.id.lblDay3);
-        numbers.put(4, R.id.lblDay4);
-        numbers.put(5, R.id.lblDay5);
-        numbers.put(6, R.id.lblDay6);
-
-        lowerTempHash.put(1, R.id.lblTemp1a);
-        lowerTempHash.put(2, R.id.lblTemp2a);
-        lowerTempHash.put(3, R.id.lblTemp3a);
-        lowerTempHash.put(4, R.id.lblTemp4a);
-        lowerTempHash.put(5, R.id.lblTemp5a);
-        lowerTempHash.put(6, R.id.lblTemp6a);
-
-        weatherHash.put(1, R.id.WeatherImage1);
-        weatherHash.put(2, R.id.WeatherImage2);
-        weatherHash.put(3, R.id.WeatherImage3);
-        weatherHash.put(4, R.id.WeatherImage4);
-        weatherHash.put(5, R.id.WeatherImage5);
-        weatherHash.put(6, R.id.WeatherImage6);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        InitializeHashTables();
 
         return inflater.inflate(R.layout.fragmentfutureforecast, container, false);
     }
 
+    public void InitializeHashTables()
+    {
+        if (numbers == null)
+        {
+            numbers = new Hashtable<Integer, Integer>();
+            numbers.put(1, R.id.lblDay1);
+            numbers.put(2, R.id.lblDay2);
+            numbers.put(3, R.id.lblDay3);
+            numbers.put(4, R.id.lblDay4);
+            numbers.put(5, R.id.lblDay5);
+            numbers.put(6, R.id.lblDay6);
+        }
+
+        if (lowerTempHash == null)
+        {
+            lowerTempHash =  new Hashtable<Integer, Integer>();
+            lowerTempHash.put(1, R.id.lblTemp1a);
+            lowerTempHash.put(2, R.id.lblTemp2a);
+            lowerTempHash.put(3, R.id.lblTemp3a);
+            lowerTempHash.put(4, R.id.lblTemp4a);
+            lowerTempHash.put(5, R.id.lblTemp5a);
+            lowerTempHash.put(6, R.id.lblTemp6a);
+        }
+
+        if (weatherHash == null)
+        {
+            weatherHash = new Hashtable<Integer, Integer>();
+            weatherHash.put(1, R.id.WeatherImage1);
+            weatherHash.put(2, R.id.WeatherImage2);
+            weatherHash.put(3, R.id.WeatherImage3);
+            weatherHash.put(4, R.id.WeatherImage4);
+            weatherHash.put(5, R.id.WeatherImage5);
+            weatherHash.put(6, R.id.WeatherImage6);
+        }
+    }
+
     public void setFragmentControlData(FutureWeather_XMLParse futureXMLParse)
     {
+        InitializeHashTables();
+
         for (int i = 1; i <= 6; i++)
         {
             SetDay(futureXMLParse.getFutureWeather().GetItem(i), i);

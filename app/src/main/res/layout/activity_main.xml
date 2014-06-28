@@ -122,12 +122,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"> <!-- This will have 50% of the screen -->
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/myViewPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            android:layout_weight="1.0">
 
         </LinearLayout>
 
