@@ -314,7 +314,6 @@ public class MainActivity extends ActionBarActivity {
         ImageView weatherImage = (ImageView) findViewById(R.id.WeatherImage);
         int iconId = WeatherIdIcons.SetWeatherCondition(currentWeather.weatherIconId, 1);
         if (iconId != 0) {
-            //weatherImage.setImageBitmap(WeatherIdIcons.invertImage(BitmapFactory.decodeResource(getResources(), iconId )));
             weatherImage.setImageResource(iconId);
         }
     }
