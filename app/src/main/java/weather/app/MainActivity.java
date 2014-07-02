@@ -99,7 +99,6 @@ public class MainActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case R.id.action_search:
 
-                //Intent intent =  new Intent("weather.app.Citylist");
                 Intent intent =  new Intent(this, Citylist.class);
                 startActivity(intent);
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,27 +33,33 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
+import weather.app.GoogleGeoLocAPI.GeoLocFromAddress;
 import weather.app.GooglePlacesAPI.PlaceJSONParser;
+import weather.app.HelperMethods.Weather_Location;
+import weather.app.HelperMethods.Weather_Network;
+import weather.app.HelperMethods.Weather_XMLParse;
+import weather.app.SQL.CityReaderAdapter;
 
 public class Citylist extends Activity implements AdapterView.OnItemClickListener {
 
-    AutoCompleteTextView atvPlaces;
-    PlacesTask placesTask;
-    ParserTask parserTask;
+    private AutoCompleteTextView atvPlaces;
+    private PlacesTask placesTask;
+    private ParserTask parserTask;
+
+    private Handler handler;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        handler = new Handler();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.citylist);
 
         atvPlaces = (AutoCompleteTextView) findViewById(R.id.atv_places);
         atvPlaces.setThreshold(1);
 
-        //atvPlaces.setAdapter(new Citylist(this, R.layout.citylist));
-        //atvPlaces.setOnItemClickListener(this);
         atvPlaces.setOnItemClickListener(this);
-
 
         atvPlaces.addTextChangedListener(new TextWatcher() {
 
@@ -62,8 +70,7 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // TODO Auto-generated method stub
             }
 
@@ -208,23 +215,63 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.activity_main, menu);
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
+    // Remove Keyboard after a selection is made
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        //mgr.hideSoftInputFromWindow(view.getWindowToken(), WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        //mgr.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
         mgr.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
-
 
         HashMap<String, String> hm = (HashMap<String, String>) adapterView.getItemAtPosition(position);
         Toast.makeText(this, hm.get("description"), Toast.LENGTH_SHORT).show();
 
+        // Use Description to get the Latitude and Longitude
+        String description = hm.get("description");
+
+        // Clear the text
+        atvPlaces.setText("");
+
+        // Get the Geo Loc - Latitude / Longitude of the city
+        GetLocationFromAddress(description);
+
+    }
+
+    private void GetLocationFromAddress(String Description)
+    {
+        final String description = Description;
+
+        Thread t = new Thread() {
+
+            public void run() {
+
+                final List<String> cityInfo = GeoLocFromAddress.getLatLongFromAddress(description);
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        AddCityToDatabase(cityInfo);
+                    }
+                });
+            }
+        };
+        t.start();
+    }
+
+    public void AddCityToDatabase(List<String> city)
+    {
+        if (city != null && city.size() == 3)
+        {
+            CityReaderAdapter db = new CityReaderAdapter(this);
+            db.open();
+
+            long id = db.insertContact(city.get(0), city.get(1), city.get(2));
+            db.close();
+        }
     }
 
 }
