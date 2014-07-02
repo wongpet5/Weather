@@ -23,14 +23,11 @@
         android:layout_height="wrap_content"
         android:hint="@string/str_atv_places" />
 
-    <TextView
-        android:id="@+id/CityName"
-        android:layout_width="fill_parent"
+    <ListView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:gravity="center_horizontal"
-        android:textColor="#ffffffff"
-        android:fontFamily="Montserrat"
-        android:layout_marginTop="15px"/>
+        android:id="@+id/city_list">
+
+    </ListView>
 
 </LinearLayout>

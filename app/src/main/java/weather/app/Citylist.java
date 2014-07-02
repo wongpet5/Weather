@@ -1,5 +1,6 @@
 package weather.app;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -14,7 +15,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
@@ -45,6 +49,8 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
     private AutoCompleteTextView atvPlaces;
     private PlacesTask placesTask;
     private ParserTask parserTask;
+
+    private String[] cities;
 
     private Handler handler;
 
@@ -79,6 +85,13 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
                 // TODO Auto-generated method stub
             }
         });
+
+        ListView CityList = (ListView) findViewById(R.id.city_list);
+
+        CityList.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        CityList.setTextFilterEnabled(true);
+        cities = new String[] {"Toronto", "Montreal", "Boston" };
+        CityList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, cities));
     }
 
     /** A method to download json data from url */
