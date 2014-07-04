@@ -3,6 +3,7 @@ package weather.app;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,9 +35,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import weather.app.Classes.City;
 import weather.app.GoogleGeoLocAPI.GeoLocFromAddress;
 import weather.app.GooglePlacesAPI.PlaceJSONParser;
 import weather.app.HelperMethods.Weather_Location;
@@ -50,9 +53,10 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
     private PlacesTask placesTask;
     private ParserTask parserTask;
 
-    private String[] cities;
-
     private Handler handler;
+
+    private List<String> citiesNames;
+    private List<City> cities;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -86,12 +90,7 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
             }
         });
 
-        ListView CityList = (ListView) findViewById(R.id.city_list);
-
-        CityList.setChoiceMode(ListView.CHOICE_MODE_NONE);
-        CityList.setTextFilterEnabled(true);
-        cities = new String[] {"Toronto", "Montreal", "Boston" };
-        CityList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, cities));
+        SetCityListView();
     }
 
     /** A method to download json data from url */
@@ -236,11 +235,8 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
         InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
         mgr.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
-
         HashMap<String, String> hm = (HashMap<String, String>) adapterView.getItemAtPosition(position);
-        Toast.makeText(this, hm.get("description"), Toast.LENGTH_SHORT).show();
 
         // Use Description to get the Latitude and Longitude
         String description = hm.get("description");
@@ -250,7 +246,6 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
 
         // Get the Geo Loc - Latitude / Longitude of the city
         GetLocationFromAddress(description);
-
     }
 
     private void GetLocationFromAddress(String Description)
@@ -284,7 +279,69 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
 
             long id = db.insertContact(city.get(0), city.get(1), city.get(2));
             db.close();
+
+            AddCityToList(city.get(0));
         }
     }
 
+    private void AddCityToList(String city)
+    {
+        if (cities != null)
+        {
+            ListView CityList = (ListView) findViewById(R.id.city_list);
+
+            CityList.setChoiceMode(ListView.CHOICE_MODE_NONE);
+            CityList.setTextFilterEnabled(true);
+
+            citiesNames.add(city);
+
+            CityList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, citiesNames));
+
+        }
+    }
+
+    private void SetCityListView()
+    {
+        CityReaderAdapter db = new CityReaderAdapter(this);
+        db.open();
+
+        citiesNames = new ArrayList<String>();
+        cities = new ArrayList<City>();
+
+        Cursor citiesCursor = db.GetAllCities();
+        while (citiesCursor.moveToNext())
+        {
+            double _lat = Double.parseDouble(citiesCursor.getString(citiesCursor.getColumnIndexOrThrow(CityReaderAdapter.KEY_LAT)));
+            double _lng = Double.parseDouble(citiesCursor.getString(citiesCursor.getColumnIndexOrThrow(CityReaderAdapter.KEY_LONG)));
+            String _city = citiesCursor.getString(citiesCursor.getColumnIndexOrThrow(CityReaderAdapter.KEY_NAME));
+
+            City newCity = new City();
+            newCity.city = _city;
+            newCity.latitude = _lat;
+            newCity.longitude = _lng;
+
+            cities.add(newCity);
+        }
+
+        db.close();
+
+        ListView CityList = (ListView) findViewById(R.id.city_list);
+
+        CityList.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        CityList.setTextFilterEnabled(true);
+
+        for (int i = 0; i < cities.size(); i++)
+        {
+            City _city = (City)cities.get(i);
+            citiesNames.add(_city.city);
+        }
+
+
+        //ArrayAdapter<String> cityListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, citiesNames);
+        //CityList.setAdapter(cityListAdapter);
+
+        CityListItemAdapter cityListAdapter = new CityListItemAdapter(citiesNames, this);
+        CityList.setAdapter(cityListAdapter);
+
+    }
 }

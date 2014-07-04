@@ -12,9 +12,9 @@ import android.util.Log;
 public final class CityReaderAdapter {
 
     static final String KEY_ROWID = "_id";
-    static final String KEY_NAME = "cityname";
-    static final String KEY_LAT = "latitude";
-    static final String KEY_LONG = "longitude";
+    public static final String KEY_NAME = "cityname";
+    public static final String KEY_LAT = "latitude";
+    public static final String KEY_LONG = "longitude";
     static final String TAG = "DBAdapter";
 
     static final String DATABASE_NAME = "MyDB";
@@ -85,12 +85,12 @@ public final class CityReaderAdapter {
         return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
-    public Cursor getAllContacts()
+    public Cursor GetAllCities()
     {
         return db.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_NAME, KEY_LAT, KEY_LONG}, null, null, null, null, null);
     }
 
-    public Cursor getContact(long rowId) throws SQLException
+    public Cursor GetContact(long rowId) throws SQLException
     {
         Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] {KEY_ROWID, KEY_NAME, KEY_LAT, KEY_LONG}, KEY_ROWID + "=" + rowId, null, null, null, null, null);
 

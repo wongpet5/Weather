@@ -4,23 +4,13 @@
     android:id="@+id/CityList"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#EEEEEE">
-
-    <TextView
-        android:id="@+id/SampleText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="City"
-        android:textSize="30dp"
-        android:gravity="center_horizontal"
-        android:textColor="#ffffffff"
-        android:fontFamily="Montserrat"
-        android:layout_marginTop="15px"/>
+    android:background="#000000">
 
     <weather.app.GooglePlacesAPI.CustomAutoCompleteTextView
         android:id="@+id/atv_places"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
         android:hint="@string/str_atv_places" />
 
     <ListView
