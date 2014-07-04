@@ -280,7 +280,9 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
             long id = db.insertContact(city.get(0), city.get(1), city.get(2));
             db.close();
 
-            AddCityToList(city.get(0));
+            //
+            //AddCityToList(city.get(0));
+            SetCityListView();
         }
     }
 
