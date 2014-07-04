@@ -37,7 +37,7 @@ public class Citylistitem extends RelativeLayout {
         iView = new ImageView(context);
         iView.setImageResource(R.raw.airelement32);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 0, 125, 0);
+        params.setMargins(0, 0, 115, 0);
         linLayout.addView(iView, params);
 
         cTemp = new TextView(context);

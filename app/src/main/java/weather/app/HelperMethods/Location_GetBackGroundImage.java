@@ -170,7 +170,7 @@ public class Location_GetBackGroundImage
             String query = "";
             String host = "";
             //set=public&from=0&to=20&minx=-180&miny=-90&maxx=180&maxy=90&size=medium&mapfilter=true
-            query = "set=public" + "&from=0&to=5" + "&minx=" + (longitude-5) + "&miny=" + (latitude-5) + "&maxx=" + (longitude+5) + "&maxy=" + (latitude+5) + "&size=medium&mapfilter=true";
+            query = "set=public" + "&from=0&to=5" + "&minx=" + (longitude-1) + "&miny=" + (latitude-1) + "&maxx=" + (longitude+1) + "&maxy=" + (latitude+1) + "&size=medium&mapfilter=true";
             host = "/map/get_panoramas.php?";
 
             URI uri = new URI("http", "www.panoramio.com", host, query, null);

@@ -336,11 +336,7 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
             citiesNames.add(_city.city);
         }
 
-
-        //ArrayAdapter<String> cityListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, citiesNames);
-        //CityList.setAdapter(cityListAdapter);
-
-        CityListItemAdapter cityListAdapter = new CityListItemAdapter(citiesNames, this);
+        CityListItemAdapter cityListAdapter = new CityListItemAdapter(cities, this);
         CityList.setAdapter(cityListAdapter);
 
     }
