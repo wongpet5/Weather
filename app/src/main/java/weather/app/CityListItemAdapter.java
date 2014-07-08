@@ -71,7 +71,6 @@ public class CityListItemAdapter extends BaseAdapter
         {
             clt = (Citylistitem) convertView;
             clt.setNameText(cities.get(position).city);
-            clt.setImage(R.raw.airelement32);
         }
 
         // Set the Temperature

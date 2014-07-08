@@ -2,9 +2,10 @@ package weather.app.HelperMethods;
 
 import android.app.PendingIntent;
 import android.content.Context;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
+
 
 import java.lang.String;
 
@@ -21,20 +22,15 @@ public class Weather_Location
 
     private void SetLocation()
     {
-        String provider = "";
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+
         LocationManager locationManager = (LocationManager) currentContext.getSystemService(Context.LOCATION_SERVICE);
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            provider = LocationManager.GPS_PROVIDER;
-        } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            provider = LocationManager.NETWORK_PROVIDER;
-        } else {
-            currentLocation = null;
-        }
-
-        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        currentLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
     }
 
+    // If NULL Default Set to location to Toronto
     public double GetLatitude()
     {
         if (currentLocation != null) {
@@ -44,6 +40,7 @@ public class Weather_Location
         }
     }
 
+    // If NULL Default Set to location to Toronto
     public double GetLongitude()
     {
         if (currentLocation != null) {
