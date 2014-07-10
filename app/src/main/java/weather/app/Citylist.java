@@ -1,8 +1,8 @@
 package weather.app;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,20 +12,16 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,9 +38,6 @@ import java.util.List;
 import weather.app.Classes.City;
 import weather.app.GoogleGeoLocAPI.GeoLocFromAddress;
 import weather.app.GooglePlacesAPI.PlaceJSONParser;
-import weather.app.HelperMethods.Weather_Location;
-import weather.app.HelperMethods.Weather_Network;
-import weather.app.HelperMethods.Weather_XMLParse;
 import weather.app.SQL.CityReaderAdapter;
 
 public class Citylist extends Activity implements AdapterView.OnItemClickListener {
@@ -217,12 +210,16 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
             int[] to = new int[] { android.R.id.text1 };
 
             // Creating a SimpleAdapter for the AutoCompleteTextView
-            SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), result, android.R.layout.simple_list_item_1, from, to);
+            SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), result, android.R.layout.select_dialog_item, from, to);
+
 
             // Setting the adapter
             atvPlaces.setAdapter(adapter);
+
+
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -280,25 +277,7 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
             long id = db.insertContact(city.get(0), city.get(1), city.get(2));
             db.close();
 
-            //
-            //AddCityToList(city.get(0));
             SetCityListView();
-        }
-    }
-
-    private void AddCityToList(String city)
-    {
-        if (cities != null)
-        {
-            ListView CityList = (ListView) findViewById(R.id.city_list);
-
-            CityList.setChoiceMode(ListView.CHOICE_MODE_NONE);
-            CityList.setTextFilterEnabled(true);
-
-            citiesNames.add(city);
-
-            CityList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, citiesNames));
-
         }
     }
 
@@ -340,6 +319,24 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
 
         CityListItemAdapter cityListAdapter = new CityListItemAdapter(cities, this);
         CityList.setAdapter(cityListAdapter);
+
+        CityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent =  new Intent(getBaseContext(), CityWeatherConditionsActivity.class);
+
+                Bundle extra = new Bundle();
+                extra.putString("City", cities.get((int)id).city.toString());
+                extra.putDouble("Latitude", cities.get((int)id).latitude);
+                extra.putDouble("Longitude", cities.get((int)id).longitude);
+
+                intent.putExtras(extra);
+
+                startActivity(intent);
+            }
+        });
 
     }
 }

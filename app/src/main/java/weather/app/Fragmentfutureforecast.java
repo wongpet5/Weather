@@ -25,12 +25,15 @@ public class Fragmentfutureforecast extends Fragment {
     public Hashtable<Integer, Integer> numbers;
     public Hashtable<Integer, Integer> lowerTempHash;
     public Hashtable<Integer, Integer> weatherHash;
+    private View _view;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         InitializeHashTables();
 
-        return inflater.inflate(R.layout.fragmentfutureforecast, container, false);
+        _view = inflater.inflate(R.layout.fragmentfutureforecast, container, false);
+        return _view;
     }
 
     public void InitializeHashTables()
@@ -87,18 +90,24 @@ public class Fragmentfutureforecast extends Fragment {
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
         String weekDay = WeatherDates.GetWeatherDays(dayOfWeek);
 
-        TextView dayOneTextView = (TextView) getView().findViewById(numbers.get(num));
-        dayOneTextView.setText(weekDay);
+        if (getView() != null) {
+            TextView dayOneTextView = (TextView) getView().findViewById(numbers.get(num));
+            dayOneTextView.setText(weekDay);
+        }
+        else {
+            TextView dayOneTextView = (TextView) _view.findViewById(numbers.get(num));
+            dayOneTextView.setText(weekDay);
+        }
     }
 
     public void SetAverageTemperature(FutureWeather item, int num) {
         String temp = Long.toString((Math.round(item.lowTemp) + Math.round(item.highTemp))/2);
 
-        TextView dayOneTextView = (TextView) getView().findViewById(lowerTempHash.get(num));
+        TextView dayOneTextView = (TextView) _view.findViewById(lowerTempHash.get(num));
         dayOneTextView.setText(temp + " °C");
     }
     public void SetWeatherImage(FutureWeather item, int num) {
-        ImageView weatherImage = (ImageView) getView().findViewById(weatherHash.get(num));
+        ImageView weatherImage = (ImageView) _view.findViewById(weatherHash.get(num));
         int iconId = WeatherIdIcons.SetWeatherCondition(item.weatherIconId, 1);
 
         if (iconId != 0)

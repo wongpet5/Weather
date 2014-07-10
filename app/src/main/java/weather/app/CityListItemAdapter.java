@@ -6,20 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import weather.app.Classes.City;
 import weather.app.Classes.Weather.CurrentWeather;
-import weather.app.HelperMethods.FutureWeather_XMLParse;
-import weather.app.HelperMethods.WeatherDates;
 import weather.app.HelperMethods.WeatherIdIcons;
 import weather.app.HelperMethods.Weather_Location;
 import weather.app.HelperMethods.Weather_Network;
@@ -88,7 +82,7 @@ public class CityListItemAdapter extends BaseAdapter
             public void run() {
                 Weather_Location weatherLocation = new Weather_Location(context);
                 Weather_Network weatherCall = new Weather_Network();
-                String weatherXML = weatherCall.DownloadText(city_final.longitude, city_final.latitude, 1);
+                String weatherXML = weatherCall.DownloadText(city_final.latitude, city_final.longitude, 1);
 
                 // Parse Current Weather Conditions XML
                 final Weather_XMLParse weatherXMLParse = new Weather_XMLParse(weatherXML);

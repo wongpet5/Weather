@@ -42,6 +42,8 @@ public class Location_GetBackGroundImage
 
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
 
+        // Check against null
+
         reader.beginObject();
         while (reader.hasNext()) {
 
@@ -97,6 +99,7 @@ public class Location_GetBackGroundImage
         reader.beginArray();
         while (reader.hasNext()) {
 
+
             //String name = reader.nextName();
             photos.add(GetPanoramasPhoto(reader));
 
@@ -144,14 +147,15 @@ public class Location_GetBackGroundImage
             else if (name.equals("photo_url")) {
                 photo.photo_url = reader.nextString();
             }
+            else if (name.equals("place_id")){
+                reader.nextString();
+            }
             else if (name.equals("upload_date")) {
-                String date = reader.nextString();
-
-                //DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                //photo.upload_date = dateFormat.parse(date);
+                reader.nextString();
             }
             else if (name.equals("width")) {
                 photo.width = reader.nextDouble();
+                break;
             }
         }
 
@@ -170,7 +174,7 @@ public class Location_GetBackGroundImage
             String query = "";
             String host = "";
             //set=public&from=0&to=20&minx=-180&miny=-90&maxx=180&maxy=90&size=medium&mapfilter=true
-            query = "set=public" + "&from=0&to=5" + "&minx=" + (longitude-1) + "&miny=" + (latitude-1) + "&maxx=" + (longitude+1) + "&maxy=" + (latitude+1) + "&size=medium&mapfilter=true";
+            query = "set=public" + "&from=0&to=5" + "&minx=" + (longitude-3) + "&miny=" + (latitude-3) + "&maxx=" + (longitude+3) + "&maxy=" + (latitude+3) + "&size=medium&mapfilter=false";
             host = "/map/get_panoramas.php?";
 
             URI uri = new URI("http", "www.panoramio.com", host, query, null);

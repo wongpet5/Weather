@@ -69,8 +69,8 @@ public class GeoLocFromAddress {
 
         List<String> returnValue = new ArrayList<String>();
         returnValue.add(youraddress);
-        returnValue.add(Double.toString(lng));
         returnValue.add(Double.toString(lat));
+        returnValue.add(Double.toString(lng));
 
         return returnValue;
     }

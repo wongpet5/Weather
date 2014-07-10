@@ -36,6 +36,15 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="weather.app.CityWeatherConditionsActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="weather.app.CityWeatherConditionsActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

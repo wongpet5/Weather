@@ -1,21 +1,21 @@
 package weather.app;
 
+
+import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ImageView;
-import android.view.*;
 import android.widget.TextView;
 import android.content.Intent;
 
 import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
 
+import weather.app.Classes.City;
 import weather.app.Classes.Weather.CurrentWeather;
 import weather.app.HelperMethods.FutureWeather_XMLParse;
 import weather.app.HelperMethods.Location_GetBackGroundImage;
@@ -32,7 +33,9 @@ import weather.app.HelperMethods.Weather_Location;
 import weather.app.HelperMethods.Weather_Network;
 import weather.app.HelperMethods.Weather_XMLParse;
 
-public class MainActivity extends ActionBarActivity {
+public class CityWeatherConditionsActivity extends FragmentActivity
+{
+    private City _city;
 
     private Fragmentfutureforecast future;
     private Handler handler;
@@ -40,21 +43,29 @@ public class MainActivity extends ActionBarActivity {
     ImageView img;
     Bitmap bitmap;
 
-    @Override
-    public View findViewById(int id) {
-        return super.findViewById(id);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         future = new Fragmentfutureforecast();
-        getSupportFragmentManager().beginTransaction().add(R.id.linlayout, future, "tag").commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.linlayout, future).commit();
 
         handler = new Handler();
+
+        Intent iin = getIntent();
+        Bundle b = iin.getExtras();
+
+        if (b!= null){
+
+            this._city = new City();
+
+            this._city.city = b.getString("City");
+            this._city.latitude = b.getDouble("Latitude");
+            this._city.longitude = b.getDouble("Longitude");
+        }
     }
+
 
     @Override
     public void onStart()
@@ -66,60 +77,20 @@ public class MainActivity extends ActionBarActivity {
         FutureWeatherThread();
     }
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.action_search:
-
-                Intent intent =  new Intent(this, Citylist.class);
-                startActivity(intent);
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     protected void BackGroundImageThread(){
+
+        final City citylocation = this._city;
+
         Thread t = new Thread() {
             public void run() {
 
-                // Get current location
-                Weather_Location weatherLocation = new Weather_Location(getApplicationContext());
 
                 String jString = "";
                 // Get Background Image for current location
                 Location_GetBackGroundImage background = new Location_GetBackGroundImage();
 
                 try {
-                    background.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 1);
+                    background.DownloadText(citylocation.latitude, citylocation.longitude, 1);
                 }
                 catch (IOException e1) {}
                 catch (ParseException e2) {}
@@ -138,12 +109,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     protected void CurrentWeatherThread(){
+
+        final City citylocation = this._city;
+
         Thread t = new Thread() {
             public void run() {
 
-                Weather_Location weatherLocation = new Weather_Location(getApplicationContext());
                 Weather_Network weatherCall = new Weather_Network();
-                String weatherXML = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 1);
+                String weatherXML = weatherCall.DownloadText(citylocation.latitude, citylocation.longitude, 1);
 
                 // Parse Current Weather Conditions XML
                 final Weather_XMLParse weatherXMLParse = new Weather_XMLParse(weatherXML);
@@ -169,12 +142,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     protected void FutureWeatherThread() {
+
+        final City citylocation = this._city;
+
         Thread t = new Thread() {
             public void run() {
 
-                Weather_Location weatherLocation = new Weather_Location(getApplicationContext());
                 Weather_Network weatherCall = new Weather_Network();
-                String weatherXMLFuture = weatherCall.DownloadText(weatherLocation.GetLatitude(), weatherLocation.GetLongitude(), 2);
+                String weatherXMLFuture = weatherCall.DownloadText(citylocation.latitude, citylocation.longitude, 2);
 
                 // Parse Future Weather Conditions XML
                 final FutureWeather_XMLParse futureXMLParse = new FutureWeather_XMLParse(weatherXMLFuture);
@@ -197,18 +172,6 @@ public class MainActivity extends ActionBarActivity {
             }
         };
         t.start();
-    }
-
-    public static Bitmap loadBitmap(String URL, BitmapFactory.Options options) {
-        Bitmap bitmap = null;
-        InputStream in = null;
-        try {
-            in = OpenHttpConnection(URL);
-            bitmap = BitmapFactory.decodeStream(in, null, options);
-            in.close();
-        } catch (IOException e1) {
-        }
-        return bitmap;
     }
 
     private static InputStream OpenHttpConnection(String strURL) throws IOException
@@ -254,7 +217,7 @@ public class MainActivity extends ActionBarActivity {
         }
         protected Bitmap doInBackground(String... args) {
             try {
-                bitmap = BitmapFactory.decodeStream((InputStream)new URL(args[0]).getContent());
+                bitmap = BitmapFactory.decodeStream((InputStream) new URL(args[0]).getContent());
             } catch (Exception e) {
                 e.printStackTrace();
             }

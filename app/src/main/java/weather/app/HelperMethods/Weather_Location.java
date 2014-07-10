@@ -1,6 +1,5 @@
 package weather.app.HelperMethods;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -38,6 +37,8 @@ public class Weather_Location
         } else {
             return 43.7;
         }
+
+        //return 22.2670;
     }
 
     // If NULL Default Set to location to Toronto
@@ -48,6 +49,8 @@ public class Weather_Location
         } else {
             return -79.4;
         }
+
+       // return 114.1880;
     }
 
     public Location GetLocation()

@@ -4,13 +4,10 @@ package weather.app;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import weather.app.Classes.City;
 
 public class Citylistitem extends RelativeLayout {
 
