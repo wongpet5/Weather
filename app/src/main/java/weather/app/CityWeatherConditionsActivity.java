@@ -9,7 +9,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
@@ -33,7 +37,7 @@ import weather.app.HelperMethods.Weather_Location;
 import weather.app.HelperMethods.Weather_Network;
 import weather.app.HelperMethods.Weather_XMLParse;
 
-public class CityWeatherConditionsActivity extends FragmentActivity
+public class CityWeatherConditionsActivity extends ActionBarActivity //ActionBarActivity
 {
     private City _city;
 
@@ -66,6 +70,12 @@ public class CityWeatherConditionsActivity extends FragmentActivity
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
 
     @Override
     public void onStart()
@@ -75,6 +85,21 @@ public class CityWeatherConditionsActivity extends FragmentActivity
         BackGroundImageThread();
         CurrentWeatherThread();
         FutureWeatherThread();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_search:
+
+                Intent intent =  new Intent(this, Citylist.class);
+                startActivity(intent);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     protected void BackGroundImageThread(){

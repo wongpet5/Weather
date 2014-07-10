@@ -8,9 +8,9 @@
         android:title="Locations"
         app:showAsAction="always" />
 
-    <item android:id="@+id/action_about"
+ <!--   <item android:id="@+id/action_about"
         android:icon="@drawable/about"
         android:title="About"
-        app:showAsAction="always" />
+        app:showAsAction="always" /> -->
 
 </menu>
