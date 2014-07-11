@@ -9,9 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import weather.app.Classes.City;
+
 public final class CityReaderAdapter {
 
-    static final String KEY_ROWID = "_id";
+    public static final String KEY_ROWID = "_id";
     public static final String KEY_NAME = "cityname";
     public static final String KEY_LAT = "latitude";
     public static final String KEY_LONG = "longitude";
@@ -80,6 +82,11 @@ public final class CityReaderAdapter {
         return db.insert(DATABASE_TABLE, null, initialValues);
     }
 
+    public void removeContact(long id)
+    {
+        String string =String.valueOf(id);
+        db.execSQL("DELETE FROM cities WHERE _id = '" + string + "'");
+    }
     public boolean deleteContact(long rowId)
     {
         return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;

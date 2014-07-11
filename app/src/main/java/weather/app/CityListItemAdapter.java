@@ -44,7 +44,7 @@ public class CityListItemAdapter extends BaseAdapter
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return cities.get(position);
     }
 
     @Override
@@ -71,6 +71,16 @@ public class CityListItemAdapter extends BaseAdapter
         SetTemperature(clt, cities.get(position));
 
         return clt;
+    }
+
+    public void Add(City city)
+    {
+        cities.add(city);
+    }
+
+    public void Remove(long position)
+    {
+        cities.remove((int)position);
     }
 
     private void SetTemperature(Citylistitem clt, City city)
@@ -118,4 +128,5 @@ public class CityListItemAdapter extends BaseAdapter
         int iconId = WeatherIdIcons.SetWeatherCondition(currentWeather.weatherIconId, 0);
         clt.setImage(iconId);
     }
+
 }

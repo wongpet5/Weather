@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -46,9 +47,10 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
     private PlacesTask placesTask;
     private ParserTask parserTask;
 
+    private CityListItemAdapter cityListAdapter;
+
     private Handler handler;
 
-    private List<String> citiesNames;
     private List<City> cities;
 
     @Override
@@ -214,6 +216,7 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
 
 
             // Setting the adapter
+            // This will set the data
             atvPlaces.setAdapter(adapter);
 
 
@@ -269,7 +272,7 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
 
     public void AddCityToDatabase(List<String> city)
     {
-        if (city != null && city.size() == 3)
+        if (city != null && city.size() == 3 && cityListAdapter != null)
         {
             CityReaderAdapter db = new CityReaderAdapter(this);
             db.open();
@@ -277,7 +280,14 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
             long id = db.insertContact(city.get(0), city.get(1), city.get(2));
             db.close();
 
-            SetCityListView();
+            City cityItem = new City();
+            cityItem.city = city.get(0);
+            cityItem.latitude = Double.parseDouble(city.get(1));
+            cityItem.longitude = Double.parseDouble(city.get(2));
+            cityItem.id = id;
+
+            cityListAdapter.Add(cityItem);
+            cityListAdapter.notifyDataSetChanged();
         }
     }
 
@@ -286,17 +296,19 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
         CityReaderAdapter db = new CityReaderAdapter(this);
         db.open();
 
-        citiesNames = new ArrayList<String>();
+        //citiesNames = new ArrayList<String>();
         cities = new ArrayList<City>();
 
         Cursor citiesCursor = db.GetAllCities();
         while (citiesCursor.moveToNext())
         {
+            long id = Long.parseLong(citiesCursor.getString(citiesCursor.getColumnIndexOrThrow(CityReaderAdapter.KEY_ROWID)));
             double _lat = Double.parseDouble(citiesCursor.getString(citiesCursor.getColumnIndexOrThrow(CityReaderAdapter.KEY_LAT)));
             double _lng = Double.parseDouble(citiesCursor.getString(citiesCursor.getColumnIndexOrThrow(CityReaderAdapter.KEY_LONG)));
             String _city = citiesCursor.getString(citiesCursor.getColumnIndexOrThrow(CityReaderAdapter.KEY_NAME));
 
             City newCity = new City();
+            newCity.id = id;
             newCity.city = _city;
             newCity.latitude = _lat;
             newCity.longitude = _lng;
@@ -311,13 +323,7 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
         CityList.setChoiceMode(ListView.CHOICE_MODE_NONE);
         CityList.setTextFilterEnabled(true);
 
-        for (int i = 0; i < cities.size(); i++)
-        {
-            City _city = (City)cities.get(i);
-            citiesNames.add(_city.city);
-        }
-
-        CityListItemAdapter cityListAdapter = new CityListItemAdapter(cities, this);
+        cityListAdapter = new CityListItemAdapter(cities, this);
         CityList.setAdapter(cityListAdapter);
 
         CityList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -338,5 +344,40 @@ public class Citylist extends Activity implements AdapterView.OnItemClickListene
             }
         });
 
+        // Delete A city from the Item List
+        SwipeDismissListViewTouchListener touchListener =
+            new SwipeDismissListViewTouchListener(
+                CityList,
+                new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                    @Override
+                    public boolean canDismiss(int position) {
+                        return true;
+                    }
+
+                    @Override
+                    public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                        for (int position : reverseSortedPositions) {
+
+                            // Get the city to delete
+                            City cityItem = (City)cityListAdapter.getItem((int)position);
+
+                            // Remove city from UI
+                            cityListAdapter.Remove(cityListAdapter.getItemId(position));
+
+                            // Remove City for Database
+                            CityReaderAdapter db = new CityReaderAdapter(getApplicationContext());
+                            db.open();
+
+                            db.removeContact(cityItem.id);
+                            db.close();
+
+                        }
+                        cityListAdapter.notifyDataSetChanged();
+                    }
+                });
+
+        CityList.setOnTouchListener(touchListener);
+
     }
+
 }
